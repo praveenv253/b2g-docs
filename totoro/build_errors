@@ -1,0 +1,57 @@
+1. Target architecture (ARMv6-vfp) not found.
+The build/core/combo/arch/arm folder contains a bunch of folders that tell you which architectures are supported. We need to add a new makefile in this folder for armv6-vfp. This makefile can be got from https://github.com/cyanogenmod/android_build/core/combo/arch/arm/armv6-vfp.mk
+
+2. build/core/base_rules.mk:170: *** system/extras/ext4_utils: MODULE.TARGET.EXECUTABLES.setup_fs already defined by device/samsung/totoro.  Stop.
+
+Problem: setup_fs is being compiled from both system/extras/ext4_utils as well as from device/samsung/totoro. Can only be built from one place. 
+Correction: Replace the following lines:
+    LOCAL_SRC_FILES := setup_fs.c
+    LOCAL_MODULE := setup_fs
+with the following lines:
+    # LOCAL_SRC_FILES := setup_fs.c
+    # LOCAL_MODULE := setup_fs
+    LOCAL_SRC_FILES := dummy.c
+    LOCAL_MODULE := dummy
+and create a "dummy.c" file in the same directory:
+    dummy.c:
+        /* Dummy file to remove the setup_fs duplicate */
+        #include <stdio.h>
+        void dummy(void)
+        {
+            int dummy=0;
+        }
+
+3. hardware/libhardware_legacy/wifi/wifi.c:26:36: error: libwpa_client/wpa_ctrl.h: No such file or directory
+Alternately: No rule to make target libwpa_client.so needed by libhardware_legacy.so
+
+Problem: We have wpa_supplicant version 8, whereas wpa_supplicant version 6 is required. Check device/samsung/totoro/BoardConfig.mk to figure out wpa_supplicant version number supported by your device.
+Correction: Change wpa_supplicant_8 to wpa_supplicant_6 in manifest file.
+
+4. make: *** No rule to make target `packages/wallpapers/LivePicker/android.software.live_wallpaper.xml', needed by `out/target/product/totoro/system/etc/permissions/android.software.live_wallpaper.xml'.  Stop.
+
+Problem: some wallpapers dependency. 
+Correction: Since this has low importance, we can just comment it away.
+Comment the line containing "android.software.live_wallpaper.xml" in vendor/samsung/totoro/totoro-vendor.mk and in device/samsung/totoro/full_totoro.mk
+
+5. system/core/debuggerd/vfp.S: Assembler messages:
+system/core/debuggerd/vfp.S:6: Error: selected processor does not support `fconstd d0,#0'
+system/core/debuggerd/vfp.S:7: Error: selected processor does not support `fconstd d1,#1'
+system/core/debuggerd/vfp.S:8: Error: selected processor does not support `fconstd d2,#2'
+system/core/debuggerd/vfp.S:9: Error: selected processor does not support `fconstd d3,#3'
+system/core/debuggerd/vfp.S:10: Error: selected processor does not support `fconstd d4,#4'
+system/core/debuggerd/vfp.S:11: Error: selected processor does not support `fconstd d5,#5'
+system/core/debuggerd/vfp.S:12: Error: selected processor does not support `fconstd d6,#6'
+system/core/debuggerd/vfp.S:13: Error: selected processor does not support `fconstd d7,#7'
+system/core/debuggerd/vfp.S:14: Error: selected processor does not support `fconstd d8,#8'
+system/core/debuggerd/vfp.S:15: Error: selected processor does not support `fconstd d9,#9'
+system/core/debuggerd/vfp.S:16: Error: selected processor does not support `fconstd d10,#10'
+system/core/debuggerd/vfp.S:17: Error: selected processor does not support `fconstd d11,#11'
+system/core/debuggerd/vfp.S:18: Error: selected processor does not support `fconstd d12,#12'
+system/core/debuggerd/vfp.S:19: Error: selected processor does not support `fconstd d13,#13'
+system/core/debuggerd/vfp.S:20: Error: selected processor does not support `fconstd d14,#14'
+system/core/debuggerd/vfp.S:21: Error: selected processor does not support `fconstd d15,#15'
+make: *** [out/target/product/totoro/obj/EXECUTABLES/vfp-crasher_intermediates/vfp.o] Error 1
+
+Problem: armv6-vfp compatibility issue
+Correction: Apply this patch: https://github.com/CyanogenMod/android_system_core/blob/ics/debuggerd/vfp.S
+

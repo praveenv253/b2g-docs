@@ -1,0 +1,13 @@
+Get fastboot from the android platform tools
+Get ClockworkMod recovery image from http://goo-inside.me/devs/aorth/roms/u8150/clockworkmod_5.0.2.8_u8150.img
+Get the phone into fastboot mode by pressig the power, volume down and end call (red) keys simultaneously.
+
+Perform the following command in terminal:
+	fastboot flash recovery /path/to/clockworkmod_5.0.2.8_u8150.img
+
+ClockworkMod Recovery is installed!
+
+Remove battery to power off.
+Create a backup image by going to the recovery section: Press the power, volume up and pick call (green) buttons simultaneously.
+
+Yay! We now have an un-brickable phone!

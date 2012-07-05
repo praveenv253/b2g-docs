@@ -1,0 +1,41 @@
+Unless otherwise mentioned, all files are w.r.t the main B2G directory, cloned from mozilla-b2g/B2G.
+
+1. .repo/manifests contains default.xml which contains links to all repositories that are pulled during "./config.sh (device_name)", i.e. during "repo sync".
+
+-> Forked manifest (http://github.com/mozilla-b2g/b2g-manifest) to "http://github.com/praveenv253/b2g-manifest" and created a new branch called "ideos". 
+-> Added new files for ideos:
+    - Build directory from ssh://git@github.com/vivekkuamrbagaria/platform_build (forked from http://github.com/mozilla-b2g/platform_build)
+    - device/huawei/u8150 from ssh://git@github.com/vivekkuamrbagaria/android_device_huawei_u8150 (forked from ColdFusionX)
+    - kernel from http://github.com/alanorth/kernel_huawei_u8160 (by using the defconfig file available for u8150)
+    - external/svox (added to avoid errors) from http://github.com/cyanogenmod/android_external_svox
+    - vendor/huawei pulled from http://github.com/psyke83/proprietary_vendor_huawei
+    (pending updation)
+    (last updated on 8-Jun-2012)
+Note: All fetch urls must contain the protocol they use (eg: https:// or git:// or ssh://), otherwise urlparse.urljoin will not work in function _XmlRemote._resolveFetchUrl in .repo/repo/manifest_xml.py
+
+2. Reinitialise the repo (this is actually not required - config.sh does this - see next point)
+repo init -u ssh://git@github.com/praveenv253/b2g-manifest -b ideos
+This makes the repo reinitialised to use the repos defined in the new cloned repo and the new branch.
+(repo subcommands' definitions can be found in .repo/repo/subcmds - in particular, init.py is used for repo init and sync.py is used for repo sync - init.py has details regarding invocation flags.
+
+3. Changes to config.sh:
+This file sets up the requisite directories by looking at the manifest file (in the manifest repo) and pulling the repos. It does this by calling repo sync, which checks out the branch corresponding to the device in manifests.
+(Note: repo init is also called by config.sh. Therefore it is imperative that you change the repo url in config.sh to "ssh://git@github.com/praveenv253/b2g-manifest")
+-> Added a new case for "ideos".
+-> device is named "u8150" -> this is very important. (this name is later used to go to the directory device/huawei/"u8150")
+-> Code is almost identical to case for galaxy-s2.
+-> the new extract-files.sh file is provided by ColdFusionX in the forked repo.
+-> Change the manifest url from http://github.com/mozilla-b2g/b2g-manifest to ssh://git@github.com/praveenv253/b2g-manifest
+
+4. Changes to build.sh:
+Calls make on the B2G directory
+
+Added support for building kernel _only_.
+(No changes to existing code)
+
+5. Changes to flash.sh:
+Flashes images to device
+
+Added fastboot for ideos.
+(Exactly like Nexus)
+

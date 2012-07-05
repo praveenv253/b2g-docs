@@ -1,0 +1,307 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass amsart
+\use_default_options true
+\begin_modules
+theorems-ams
+eqs-within-sections
+figs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 3cm
+\bottommargin 3cm
+\headheight 2cm
+\headsep 3cm
+\footskip 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Setting up B2G Build Environment
+\end_layout
+
+\begin_layout Abstract
+Condensed form of the full documentation given at:
+\end_layout
+
+\begin_layout Abstract
+https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/Setting_Up_Boot_to_Gecko_Bu
+ild_Environment
+\end_layout
+
+\begin_layout Abstract
+In short, the set up has a list of build dependencies, heimdall (for rooting
+ and flashing galaxy S2 specifically), adb (the android debugging brindge
+ - one time requirement), configuration of USB (in order to 
+\begin_inset Quotes eld
+\end_inset
+
+let adb talk to the device
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Section
+Heimdall
+\end_layout
+
+\begin_layout Standard
+Version 1.3.1 is recommended, not 1.3.2.
+\end_layout
+
+\begin_layout Standard
+Building requires the dependencies libusb-1.0-0 and libusb-1.0-0-dev to be
+ installed.
+\end_layout
+
+\begin_layout LyX-Code
+git clone https://github.com/Benjamin-Dobell/Heimdall.git
+\end_layout
+
+\begin_layout LyX-Code
+git checkout v1.3.1
+\end_layout
+
+\begin_layout LyX-Code
+cd libpit
+\end_layout
+
+\begin_layout LyX-Code
+./configure
+\end_layout
+
+\begin_layout LyX-Code
+make
+\end_layout
+
+\begin_layout LyX-Code
+cd ../heimdall
+\end_layout
+
+\begin_layout LyX-Code
+./configure
+\end_layout
+
+\begin_layout LyX-Code
+make
+\end_layout
+
+\begin_layout LyX-Code
+sudo make install
+\end_layout
+
+\begin_layout Section
+Build dependencies
+\end_layout
+
+\begin_layout LyX-Code
+sudo apt-get install build-dep firefox
+\end_layout
+
+\begin_layout LyX-Code
+sudo apt-get install git mercurial libasound2-dev libcurl4-openssl-dev libnotify
+-dev 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+                     libxt-dev libiw-dev mesa-common-dev autoconf2.13
+\end_layout
+
+\begin_layout LyX-Code
+sudo apt-get install gcc-multilib g++-multilib bison flex gperf libncurses5-dev
+ libidl-dev 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+                     autoconf2.13 ccache libx11-dev libgl1-mesa-dev yasm
+\end_layout
+
+\begin_layout LyX-Code
+# Only for 64 bit systems:
+\end_layout
+
+\begin_layout LyX-Code
+sudo apt-get install ia32-libs ia32-libs-dev lib32z-dev lib32ncurses5-dev
+ lib32gomp1 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+                     lib32ncursesw5-dev libncurses5-dev lib32readline-gplv2-dev
+\end_layout
+
+\begin_layout Standard
+Type 
+\begin_inset Quotes eld
+\end_inset
+
+Y
+\begin_inset Quotes erd
+\end_inset
+
+ when prompted for any extra dependencies.
+\end_layout
+
+\begin_layout Section
+Android SDK (for adb & fastboot)
+\end_layout
+
+\begin_layout Standard
+Download the SDK starter package: http://dl.google.com/android/android-sdk_r18-lin
+ux.tgz
+\end_layout
+
+\begin_layout Standard
+Install the starter package.
+ While installing, only 
+\begin_inset Quotes eld
+\end_inset
+
+Android SDK Platform tools
+\begin_inset Quotes erd
+\end_inset
+
+ is required.
+ The rest can be unchecked.
+ Install X Packages, when clicked, should say only 1 package.
+ The rest are not needed.
+\end_layout
+
+\begin_layout LyX-Code
+vim ~/.bashrc
+\end_layout
+
+\begin_layout Standard
+Add the following at the end:
+\end_layout
+
+\begin_layout LyX-Code
+PATH=$PATH:/home/mozilla/android-sdk-linux/platform-tools 
+\end_layout
+
+\begin_layout LyX-Code
+# After making gonk for the first time, this needs to be changed to:
+\end_layout
+
+\begin_layout LyX-Code
+# PATH=$PATH:/home/mozilla/gits/B2G/glue/gonk/out/host/linux-x86/bin
+\end_layout
+
+\begin_layout LyX-Code
+export PATH
+\end_layout
+
+\begin_layout Section
+Configuring USB
+\end_layout
+
+\begin_layout Standard
+Set up the android rules file:
+\end_layout
+
+\begin_layout LyX-Code
+sudo nano /etc/udev/rules.d/51-android.rules
+\end_layout
+
+\begin_layout Standard
+Add:
+\end_layout
+
+\begin_layout LyX-Code
+SUBSYSTEM=="usb", ATTR{idVendor}=="04e8", MODE="0666", GROUP="plugdev"
+\end_layout
+
+\begin_layout Standard
+Refer https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/Setting_Up_Boot_to_Ge
+cko_Build_Environment for more details.
+\end_layout
+
+\begin_layout Standard
+Vendor id and product id can be found by performing the command 
+\begin_inset Quotes eld
+\end_inset
+
+lsusb
+\begin_inset Quotes erd
+\end_inset
+
+ on the host computer.
+\end_layout
+
+\begin_layout LyX-Code
+sudo chmod a+r /etc/udev/rules.d/51-android.rules
+\end_layout
+
+\begin_layout Section
+Cloning the Repo
+\end_layout
+
+\begin_layout LyX-Code
+git clone https://github.com/andreasgal/B2G.git
+\end_layout
+
+\end_body
+\end_document

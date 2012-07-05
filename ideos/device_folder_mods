@@ -1,0 +1,14 @@
+All of these changes have been made inside of the B2G/device/huawei/u8150 folder unless otherwise mentioned.
+
+(last edited on 7-Jun-2012 11:58AM)
+(First update)
+
+1. Copied cm.mk to full_u8150.mk (within the same dir)
+This is a convention used by the android build system. 
+full_<device> is called by the android build system (ie build/core/main.mk -> config.mk -> BoardConfig.mk -> (not sure where exactly after this))
+
+2. Device is renamed from cyanogen_u8150 to full_u8150 in BoardConfig.mk
+
+3. Symlink is created: device_u8150.mk -> device.mk
+
+4. armv6j.mk is added to B2G/build/core/combo/target/arch/arm. This makefile is got from https://raw.github.com/CyanogenMod/android_build/ics/core/combo/arch/arm/armv6j.mk

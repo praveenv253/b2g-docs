@@ -1,0 +1,33 @@
+1.
+In device/huawei/u8150/BoardConfig.mk, set:
+	BOARD_KERNEL_BASE := 0x200000
+This is the physical offset of the kernel. If this is not done, all the addresses are off by a certain amount.
+
+2.
+To see the kernel log on the console after the device boots, change
+	console=ttyMSM2
+to:
+	console=tty0
+in device/huawei/u8150/BoardConfig.mk in the BOARD_KERNEL_CMDLINE setting
+
+3.
+Pull init.rc and ueventd.rc from the device itself.
+To init.rc, add the line:
+	import /init.b2g.rc
+at the beginning, and the lines:
+	chmod 0755 /system/b2g/b2g
+	chmod 0755 /system/b2g/plugin-container
+	chmod 0755 /system/b2g/updater
+after mount yaffs2 mtd@system /system
+In BoardConfig.mk, set:
+	TARGET_PROVIDES_INIT_RC := true
+	TARGET_PROVIDES_UEVENTD_RC := true
+Make sure that device/huawei/u8150/device_u8150.mk has the following:
+# Init files
+PRODUCT_COPY_FILES += \
+    device/huawei/u8150/prebuilt/init.u8150.usb.rc:root/init.u8150.usb.rc \
+    device/huawei/u8150/prebuilt/init.u8150.rc:root/init.u8150.rc \
+    device/huawei/u8150/prebuilt/ueventd.u8150.rc:root/ueventd.u8150.rc \
+    device/huawei/u8150/prebuilt/init.rc:root/init.rc \
+    device/huawei/u8150/prebuilt/ueventd.rc:root/ueventd.rc
+

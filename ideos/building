@@ -1,0 +1,5 @@
+In the main B2G directory:
+./build.sh kernel
+./build.sh
+
+Look at the build_errors file for correcting build errors that will pop up.

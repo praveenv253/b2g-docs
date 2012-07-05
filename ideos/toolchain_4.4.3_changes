@@ -1,0 +1,116 @@
+1.
+frameworks/base/include/utils/StrongPointer.h: error: template with C linkage
+Seems to be happening in all files in this folder.
+
+Solution: Wrap the whole header file with extern "C++" { <file> }
+Check: http://stackoverflow.com/questions/2328031/g-fails-mysteriously-only-if-a-h-is-in-a-certain-directory
+
+Same thing happens with frameworks/base/include/binder
+Wrap all headers in this folder with extern "C++" as well.
+
+Note: Later on, you get an error like "Needed '(' before string identifier", or something like that.
+Can be solved by _removing_ the extern "C++" wrapping that we had applied for frameworks/base/include/utils/Log.h
+
+2.
+system/extras/tests/binder/benchmarks/binderAddInts.cpp:374: error: ISO C++ forbids declaration of 'cpu_set_t' with no type
+system/extras/tests/binder/benchmarks/binderAddInts.cpp:374: error: expected ',' or '...' before '&' token
+system/extras/tests/binder/benchmarks/binderAddInts.cpp: In function 'std::ostream& operator<<(std::ostream&, int)':
+system/extras/tests/binder/benchmarks/binderAddInts.cpp:376: error: 'CPU_SETSIZE' was not declared in this scope
+system/extras/tests/binder/benchmarks/binderAddInts.cpp:377: error: 'set' was not declared in this scope
+system/extras/tests/binder/benchmarks/binderAddInts.cpp:377: error: 'CPU_ISSET' was not declared in this scope
+make: *** [out/target/product/u8150/obj/EXECUTABLES/binderAddInts_intermediates/binderAddInts.o] Error 1
+
+Solution: 
+Add the following code to binderAddInts.cpp:
+#define _GNU_SOURCE
+extern "C" {
+#include<sched.h>
+}
+
+3.
+hardware/libhardware_legacy/power/power.c: In function 'set_screen_state':
+hardware/libhardware_legacy/power/power.c:167: warning: implicit declaration of function '__android_log_print'
+hardware/libhardware_legacy/power/power.c:167: error: 'ANDROID_LOG_INFO' undeclared (first use in this function)
+hardware/libhardware_legacy/power/power.c:167: error: (Each undeclared identifier is reported only once
+hardware/libhardware_legacy/power/power.c:167: error: for each function it appears in.)
+hardware/libhardware_legacy/power/power.c:188: error: 'ANDROID_LOG_ERROR' undeclared (first use in this function)
+make: *** [out/target/product/u8150/obj/SHARED_LIBRARIES/libhardware_legacy_intermediates/power/power.o] Error 1
+
+Solution: Comment out the LOGI and LOGE statements on the respective lines :P
+
+
+4. Add extern "C++" wrappers around all headers in:
+system/core/include/private/pixelfinger
+frameworks/base/include/ui
+frameworks/base/include/media/
+frameworks/base/include/media/stagefright
+frameworks/base/include/media/stagefright/foundation
+frameworks/base/media/libstagefright/include
+frameworks/base/include/private/opengles
+
+and to all these files:
+
+except in:
+frameworks/base/include/media/MediaPlayerInterface.h
+dalvik/libnativehelper/include/nativehelper/JNIHelp.h
+
+5.
+Something like "Could not find definition of SurfaceTexture_getSurfaceTexture..." in line 70 of frameworks/base/core/jni/android_view_TextureView.cpp
+Problem: Older compilers require the common header file (for externally defined functions) to be defined in both files.
+
+Solution: Include #include<android_runtime/android_graphics_SurfaceTexture.h> in frameworks/base/core/jni/android/graphics/SurfaceTexture.cpp
+
+6.
+../../widget/gonk/Static.o: In function `LibUtilsFirstStatics':
+/home/praveen/Programs/intern/new_toolchain/gecko/widget/gonk/libui/Static.cpp:33: undefined reference to `android::initialize_string16()'
+../../widget/gonk/Static.o: In function `~LibUtilsFirstStatics':
+/home/praveen/Programs/intern/new_toolchain/gecko/widget/gonk/libui/Static.cpp:38: undefined reference to `android::terminate_string16()'
+collect2: ld returned 1 exit status
+
+Solution:
+Copy paste String16.cpp from frameworks/base/libs/utils/String16.cpp to gecko/widget/gonk/libui/
+Make the following changes in String16.cpp:
+Replace each of the following lines (may not be in order) with the corresponding lines:
+	#include <utils/String8.h>
+	#include <utils/String16.h>
+	#include <private/utils/Static.h>
+	#include <utils/Log.h>
+	#include <utils/Unicode.h>
+To be replaced with:
+	#include "String8.h"
+	#include "String16.h"
+	#include "Static.h"
+	#include "utils_Log.h"
+	#include "Unicode.h"
+
+7.
+target SharedLib: libOpenMAXAL (out/target/product/u8150/obj/SHARED_LIBRARIES/libOpenMAXAL_intermediates/LINKED/libOpenMAXAL.so)
+out/target/product/u8150/obj/SHARED_LIBRARIES/libOpenMAXAL_intermediates/assert.o: In function `__assert2(char const*, int, char const*, char const*)':
+/home/praveen/Programs/intern/new_toolchain/system/media/wilhelm/src/assert.c:31: undefined reference to `__android_log_assert'
+out/target/product/u8150/obj/SHARED_LIBRARIES/libOpenMAXAL_intermediates/assert.o: In function `__assert(char const*, int, char const*)':
+/home/praveen/Programs/intern/new_toolchain/system/media/wilhelm/src/assert.c:24: undefined reference to `__android_log_assert'
+collect2: ld returned 1 exit status
+make: *** [out/target/product/u8150/obj/SHARED_LIBRARIES/libOpenMAXAL_intermediates/LINKED/libOpenMAXAL.so] Error 1
+
+Solution: Tried putting #include <android/log.h> in system/core/liblog/logd_write.c
+Tried changing <utils/Log.h> to <cutils/log.h> in assert.c
+Tried adding liblog to LOCAL_SHARED_LIBRARIES setting in system/media/wilhelm/src/Android.mk
+Finally: Commented out the two offending lines in assert.c :P
+
+8.
+target arm C++: libwebrtc_system_wrappers <= external/webrtc/src/system_wrappers/source/rw_lock_linux.cc
+target StaticLib: libwebrtc_system_wrappers (out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a)
+target SharedLib: libwebrtc_audio_preprocessing (out/target/product/u8150/obj/SHARED_LIBRARIES/libwebrtc_audio_preprocessing_intermediates/LINKED/libwebrtc_audio_preprocessing.so)
+out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a(atomic32.o): In function `webrtc::Atomic32Impl::CompareExchange(int, int)':
+/home/praveen/Programs/intern/new_toolchain/external/webrtc/src/system_wrappers/source/atomic32_linux.h:110: undefined reference to `__sync_bool_compare_and_swap_4'
+out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a(atomic32.o): In function `webrtc::Atomic32Impl::operator-=(int)':
+/home/praveen/Programs/intern/new_toolchain/external/webrtc/src/system_wrappers/source/atomic32_linux.h:102: undefined reference to `__sync_fetch_and_sub_4'
+out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a(atomic32.o): In function `webrtc::Atomic32Impl::operator--()':
+/home/praveen/Programs/intern/new_toolchain/external/webrtc/src/system_wrappers/source/atomic32_linux.h:76: undefined reference to `__sync_fetch_and_sub_4'
+out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a(atomic32.o): In function `webrtc::Atomic32Impl::operator+=(int)':
+/home/praveen/Programs/intern/new_toolchain/external/webrtc/src/system_wrappers/source/atomic32_linux.h:95: undefined reference to `__sync_fetch_and_add_4'
+out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_system_wrappers_intermediates/libwebrtc_system_wrappers.a(atomic32.o): In function `webrtc::Atomic32Impl::operator++()':
+/home/praveen/Programs/intern/new_toolchain/external/webrtc/src/system_wrappers/source/atomic32_linux.h:69: undefined reference to `__sync_fetch_and_add_4'
+collect2: ld returned 1 exit status
+make: *** [out/target/product/u8150/obj/SHARED_LIBRARIES/libwebrtc_audio_preprocessing_intermediates/LINKED/libwebrtc_audio_preprocessing.so] Error 1
+

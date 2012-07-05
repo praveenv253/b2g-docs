@@ -1,0 +1,34 @@
+1. config.sh (mozilla-b2g/B2G)
+We need to create a new "case" for beagle board. It needs to set the necessary bits in .config in the main directory.
+
+2. .config (mozilla-b2g/B2G)
+This is an auto-generated file.
+Other files will determine what environment variables need to be set here. Accordingly, config.sh will need to be changed to set these bits.
+
+3. extract-files.sh (mozilla-b2g/B2G/device/samsung/galaxys2/)
+Phone must be connected.
+Checks if the firmware present on the phone is supported by B2G. Otherwise, firmware needs to be upgraded. If the firmware is supported, it proceeds to do several tasks:
+Copies files from the target phone onto a similar directory structure in the host. Copied files include some libraries and media files.
+We need to ensure that this works even though we have "incompatible" firmware. For this, we need to know the firmware version of android installed on beagle. We also need to know the directory structure of the android on the beagle board and the locations of the various library/media files.
+
+4. setup-makefiles.sh (mozilla/B2G/device/samsung/galaxys2/)
+Adds the license to some makefiles. This may or may not need to be changed. Uses $DEVICE and $MANUFACTURER - check if this is device specific.
+
+4. load-config.sh (mozilla-b2g/B2G)
+Called by setup.sh.
+Sources .config to set the relevant environment variables.
+
+5. setup.sh
+Calls load-config.sh and envsetup.sh. Also calls lunch (once it is in the environment). Sets some gaia environment variables.
+
+6. envsetup.sh (mozilla-b2g/B2G/build)
+Called by setup.sh
+Sets the main environment variables such as PLATFORM_VERSION, TARGET_PRODUCT, TARGET_BUILD_VARIANT, etc. via lunch). Is capable of giving user prompt to select which product, variant, etc. if proper environment variables are set.
+
+7. build.sh (mozilla-b2g/B2G)
+Main build script.
+Calls setup.sh followed by make with a MAKE_FLAGS argument. MAKE_FILES is an environment variables with parameters to make.
+
+All compiled files for gecko go into the directory B2G/objdir-gecko.
+All other compiled files go into B2G/out.
+
