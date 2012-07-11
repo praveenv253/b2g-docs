@@ -76,7 +76,6 @@ Refer to: http://forum.xda-developers.com/showthread.php?t=1501114&page=3
 3. make: *** No rule to make target `packages/wallpapers/LivePicker/android.software.live_wallpaper.xml', needed by `out/target/product/u8150/system/etc/permissions/android.software.live_wallpaper.xml'.  Stop.
 
 Problem: some wallpapers dependency. 
-Correction: Since this has low importance, we can just comment it away.
 Comment the line containing "android.software.live_wallpaper.xml" in vendor/huawei/u8150/u8150-vendor.mk
 
 4. make: *** No rule to make target `development/data/etc/apns-conf_sdk.xml', needed by `out/target/product/u8150/system/etc/apns-conf.xml'.  Stop.

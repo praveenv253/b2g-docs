@@ -1,13 +1,28 @@
-Get fastboot from the android platform tools
-Get ClockworkMod recovery image from http://goo-inside.me/devs/aorth/roms/u8150/clockworkmod_5.0.2.8_u8150.img
-Get the phone into fastboot mode by pressig the power, volume down and end call (red) keys simultaneously.
+What is ClockWordMod?
+	ClockWorkMod(CWM) is a custom Android recovery, which helps us to perform advanced recoveries, maintenence. It is a good practice to install CWM while working with Android phone with root access.
+	Good tutorial - http://www.addictivetips.com/mobile/what-is-clockworkmod-recovery-and-how-to-use-it-on-android-complete-guide/
 
-Perform the following command in terminal:
-	fastboot flash recovery /path/to/clockworkmod_5.0.2.8_u8150.img
+Method 1
+	Get fastboot from the android platform tools
+	Get ClockworkMod recovery image from http://goo-inside.me/devs/aorth/roms/u8150/clockworkmod_5.0.2.8_u8150.img
+	Get the phone into fastboot mode by pressig the power, volume down and end call (red) keys simultaneously.
 
-ClockworkMod Recovery is installed!
+	Perform the following command in terminal:
+		fastboot flash recovery /path/to/clockworkmod_5.0.2.8_u8150.img
 
-Remove battery to power off.
-Create a backup image by going to the recovery section: Press the power, volume up and pick call (green) buttons simultaneously.
+	ClockworkMod Recovery is installed!
 
-Yay! We now have an un-brickable phone!
+	Remove battery to power off.
+	Create a backup image by going to the recovery section: Press the power, volume up and pick call (green) buttons simultaneously.
+
+	Yay! We now have an un-brickable phone!
+	
+Method 2 ( General )
+	Get the ClockWorkMod recovery zip folder
+	Add the zip folder in sd card of the mobile
+	
+	Install the ClockWorkMod
+		Switch off the mobile. Press the power, volume up and pick call (green) buttons simultaneously.
+		Choose the option to 'install sd card ', choose the ClockWorkMod zip folder and install it.
+		Now we can create recovery image by going to the recovery section.
+	

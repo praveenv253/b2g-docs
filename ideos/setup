@@ -1,7 +1,7 @@
 Unless otherwise mentioned, all files are w.r.t the main B2G directory, cloned from mozilla-b2g/B2G.
 
-1. .repo/manifests contains default.xml which contains links to all repositories that are pulled during "./config.sh (device_name)", i.e. during "repo sync".
-
+1) .repo/manifests contains default.xml which contains links to all repositories that are pulled during "./config.sh (device_name)", i.e. during "repo sync". The device name must be included in the config.sh. Basically "repo" pulls all the repositories mentioned in default.xml in the branch : (device_name)
+	
 -> Forked manifest (http://github.com/mozilla-b2g/b2g-manifest) to "http://github.com/praveenv253/b2g-manifest" and created a new branch called "ideos". 
 -> Added new files for ideos:
     - Build directory from ssh://git@github.com/vivekkuamrbagaria/platform_build (forked from http://github.com/mozilla-b2g/platform_build)
@@ -13,12 +13,12 @@ Unless otherwise mentioned, all files are w.r.t the main B2G directory, cloned f
     (last updated on 8-Jun-2012)
 Note: All fetch urls must contain the protocol they use (eg: https:// or git:// or ssh://), otherwise urlparse.urljoin will not work in function _XmlRemote._resolveFetchUrl in .repo/repo/manifest_xml.py
 
-2. Reinitialise the repo (this is actually not required - config.sh does this - see next point)
+2) Reinitialise the repo (this is actually not required - config.sh does this - see next point)
 repo init -u ssh://git@github.com/praveenv253/b2g-manifest -b ideos
 This makes the repo reinitialised to use the repos defined in the new cloned repo and the new branch.
 (repo subcommands' definitions can be found in .repo/repo/subcmds - in particular, init.py is used for repo init and sync.py is used for repo sync - init.py has details regarding invocation flags.
 
-3. Changes to config.sh:
+3) Changes to config.sh:
 This file sets up the requisite directories by looking at the manifest file (in the manifest repo) and pulling the repos. It does this by calling repo sync, which checks out the branch corresponding to the device in manifests.
 (Note: repo init is also called by config.sh. Therefore it is imperative that you change the repo url in config.sh to "ssh://git@github.com/praveenv253/b2g-manifest")
 -> Added a new case for "ideos".
@@ -27,13 +27,13 @@ This file sets up the requisite directories by looking at the manifest file (in 
 -> the new extract-files.sh file is provided by ColdFusionX in the forked repo.
 -> Change the manifest url from http://github.com/mozilla-b2g/b2g-manifest to ssh://git@github.com/praveenv253/b2g-manifest
 
-4. Changes to build.sh:
+4) Changes to build.sh:
 Calls make on the B2G directory
 
 Added support for building kernel _only_.
 (No changes to existing code)
 
-5. Changes to flash.sh:
+5) Changes to flash.sh:
 Flashes images to device
 
 Added fastboot for ideos.
