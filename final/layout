@@ -1,0 +1,100 @@
+Overall Layout of Internship Report
+===================================
+
+0 Introduction
+
+1 Motivation for this porting process
+	1.1 B2G is more open than Android
+	1.2 Contribution of code from volunteers
+	1.3 Apps written in HTML5!
+	1.4 Compelete control over low-level devices and API
+
+2 Prerequisites
+	2.1 Prerequisite knowledge
+		2.1.1 C, C++
+		2.1.2 Bash
+		2.1.3 Make
+		2.1.4 Git
+		2.1.5 ADB
+		2.1.6 GDB
+	2.2 Computer pre-requisites
+		2.2.1 Linux (Ubuntu 11.10, preferably 64-bit)
+		2.2.2 <Link to dependency list>
+		2.2.3 Speed, preferably
+
+3 Code sources
+	3.1 Github
+		3.1.0 mozilla-b2g
+		3.1.1 CyanogenMod
+		3.1.2 Android (mirror of android.googlesource.com)
+		3.1.3 alanorth (huawei u8150 and u8185 kernel)
+		3.1.4 tilal6991 (Lalit Maganti)
+			3.1.4.1 ColdFusionX
+			3.1.4.2 CommonFusionX
+		3.1.5 Psyke83 (vendor directory)
+		3.1.6 apitrace (for debugging OpenGL)
+	3.2 android.googlesource.com
+	3.3 codeaurora.org
+	3.4 android.git.linaro.org
+
+4 Information sources
+	4.1 Mozilla wiki (wiki.mozilla.org/B2G)
+	4.2 Mozilla developer network (https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/)
+	4.3 XDA Forums (forum.xda-developers.com)
+	4.4 pdadb.net, www.gsmarena.com, en.wikipedia.org (for phone info)
+	4.5 en.wikipedia.org (for everything else)
+	4.6 http://www.freeyourandroid.com/guide/introdution_to_edify (Edify script commands)
+
+5 Choosing a phone
+
+6 General porting process
+
+7 Getting the sources - git, repo, manifest
+
+8 B2G build system (taken from android)
+	8.1 Configure script & repo sync
+	8.2 Build - Android.mk, how it subdirectories are recursively called
+	8.3 Flash - partitions
+
+9 B2G directory layout
+	9.1 bionic
+	9.2 build
+	9.3 device
+	9.4 external
+	9.5 frameworks
+	9.6 gaia
+	9.7 gecko
+	9.8 gonk-misc
+	9.9 hardware
+	9.10 kernel
+	9.11 ndk
+	9.12 out
+		9.12.1 target/product/<device>/
+			9.12.1.1 root
+			9.12.1.2 system
+			9.12.1.3 data
+			9.12.1.4 symbols
+			9.12.1.5 obj/objdir-gecko/
+		9.12.2 host
+	9.13 prebuilt
+	9.14 system
+	9.15 vendor
+
+10 Gecko build system
+
+11 Expected build errors and solutions
+
+12 Debugging run-time errors
+	12.1 ADB
+	12.2 GDB & gdbserver
+	12.3 logcat
+	12.4 dmesg
+	12.5 Logging (equivalent of using print statements)
+
+13 Getting help
+	13.1 Google
+	13.2 IRC (irc.mozilla.org - #b2g, #mobile, #jsapi; irc.freenode.org - #android-root, #cyanogenmod-dev)
+	13.3 Mailing lists
+	13.4 XDA Forums
+	13.5 mjanja.co.ke (for Ideos)
+
