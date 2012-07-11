@@ -82,19 +82,29 @@ Overall Layout of Internship Report
 
 10 Gecko build system
 
-11 Expected build errors and solutions
+11 Pre-installation procedure
+	11.1 Galaxy S2 as a reference phone
+	11.2 Clockworkmod recovery
+	11.3 Cyanogenmod ICS
 
-12 Debugging run-time errors
-	12.1 ADB
-	12.2 GDB & gdbserver
-	12.3 logcat
-	12.4 dmesg
-	12.5 Logging (equivalent of using print statements)
+12 Kernel
 
-13 Getting help
-	13.1 Google
-	13.2 IRC (irc.mozilla.org - #b2g, #mobile, #jsapi; irc.freenode.org - #android-root, #cyanogenmod-dev)
-	13.3 Mailing lists
-	13.4 XDA Forums
-	13.5 mjanja.co.ke (for Ideos)
+13 Architectures and instruction sets
+
+14 Expected build errors and solutions
+
+15 Debugging run-time errors
+	15.1 ADB
+	15.2 GDB & gdbserver
+	15.3 logcat
+	15.4 dmesg
+	15.5 Logging (equivalent of using print statements)
+
+16 Getting help
+	16.1 Google
+	16.2 IRC (irc.mozilla.org - #b2g, #mobile, #jsapi; irc.freenode.org - #android-root, #cyanogenmod-dev)
+	16.3 Mailing lists
+	16.4 XDA Forums
+	16.5 mjanja.co.ke (for Ideos)
+
 
