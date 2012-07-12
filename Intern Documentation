@@ -1,5 +1,5 @@
 **************************************************************************************************************************************************************************
-Prerequisites -
+1) Prerequisites
 The code-base of B2G is very large. Thus we will require lots of tools to understand the code and debug the code.
 Languages used :
 
@@ -50,23 +50,6 @@ Documentation - http://developer.android.com/tools/help/adb.html
 				
 6) Linux - We strongly recommend Linux as the operating system to be used for developing. According to the B2G docs 64 bit linux and version > 11.10 is is preffered.
 	Speed - Compilation will take a lot of time, thus a fast comp is preffered.
-	
-**************************************************************************************************************************************************************************
-B2G is striped down fork of Android code. Thus any knowledge 
-There are lots of tools which will be required to understand the code.
-	2.1 Prerequisite knowledge
-		2.1.1 C, C++
-		2.1.2 Bash
-		2.1.3 Make
-		2.1.4 Git
-		2.1.5 ADB
-		2.1.6 GDB
-	2.2 Computer pre-requisites
-		2.2.1 Linux (Ubuntu 11.10, preferably 64-bit)
-		2.2.2 <Link to dependency list>
-		2.2.3 Speed, preferably
-
-
 
 **************************************************************************************************************************************************************************
 3 Code sources
@@ -99,23 +82,9 @@ Github - This is the main source for various code modules.
 	
 	some other useful sites - codeaurora.org
 	
-**************************************************************************************************************************************************************************	
-	3.1 Github
-		3.1.0 mozilla-b2g
-		3.1.1 CyanogenMod
-		3.1.2 Android (mirror of android.googlesource.com)
-		3.1.3 alanorth (huawei u8150 and u8185 kernel)
-		3.1.4 tilal6991 (Lalit Maganti)
-			3.1.4.1 ColdFusionX
-			3.1.4.2 CommonFusionX
-		3.1.5 Psyke83 (vendor directory)
-		3.1.6 apitrace (for debugging OpenGL)
-	3.2 android.googlesource.com
-	3.3 codeaurora.org
-	3.4 android.git.linaro.org(VERIFY)
-
-
 **************************************************************************************************************************************************************************
+4 Information sources
+
 The above mentioned sites are mainly for code source. But we will need answers to lot of frequently araising doubts and errors.
 
 1) Mozilla wiki (wiki.mozilla.org/B2G) - This is the starting point to know B2G basics. Some of the important links are
@@ -148,10 +117,3 @@ B2G/QA
 	fastboot.
 **************************************************************************************************************************************************************************
 
-4 Information sources
-	4.1 Mozilla wiki (wiki.mozilla.org/B2G)
-	4.2 Mozilla developer network (https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/)
-	4.3 XDA Forums (forum.xda-developers.com)
-	4.4 pdadb.net, www.gsmarena.com, en.wikipedia.org (for phone info)
-	4.5 en.wikipedia.org (for everything else)
-	4.6 http://www.freeyourandroid.com/guide/introdution_to_edify (Edify script commands)
