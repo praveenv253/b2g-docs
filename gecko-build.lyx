@@ -1,0 +1,295 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Gecko build system
+\end_layout
+
+\begin_layout Standard
+Building gecko is different compared to the android build system.
+ The gecko build system comprises of two main files at the user end, configure
+ and client.mk.
+ client.mk is the make file for building the source.
+ configure, as the name suggests configures the build system according to
+ the input configuration option.
+\end_layout
+
+\begin_layout Standard
+To build gecko, use the following command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd path/to/gecko
+\end_layout
+
+\begin_layout LyX-Code
+$ make -f client.mk <options>
+\end_layout
+
+\begin_layout Standard
+In case options are not given, it builds firefox.
+ The options field will decide the app to build, the toolchain to use, the
+ architecture to build for and so on.
+ Some of the options are:
+\end_layout
+
+\begin_layout LyX-Code
+--with-arch=<target-arch> # For example, the present project target-arch
+ is armv6
+\end_layout
+
+\begin_layout LyX-Code
+--enable-application=<app> # b2g in our case
+\end_layout
+
+\begin_layout LyX-Code
+--enable-media-plugins
+\end_layout
+
+\begin_layout Standard
+However, a typical 'non firefox' build requires a lot of options to be passed.
+ Hence we use a config file, which is called MOZCONFIG file.
+ The MOZCONFIG file will have two types of configuration options:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+mk_add_options: 
+\emph default
+These will be passed to the make file.
+ Some options are MOZ_MAKE_FLAGS, MOZ_OBJDIR
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+ac_add_options: 
+\emph default
+These will be passed to the configuration file.
+ Some options are --with-arch=, --with-thumb= .
+\end_layout
+
+\begin_layout Subsection*
+Object directory
+\end_layout
+
+\begin_layout Standard
+The compiled output is dumped in the object directory.
+ The object directory is passed as an option to client.mk.
+ A typical example is:
+\end_layout
+
+\begin_layout LyX-Code
+$ MOZ_OBJDIR=../objdir-gecko make -f client.mk
+\end_layout
+
+\begin_layout Standard
+This will create a directory called 
+\emph on
+objdir-gecko 
+\emph default
+at the top level, in which all the compiled output will be stored.
+ Make sure that object directory is not the same directory as the gecko
+ folder.
+ This may give rise to lot of errors.
+\end_layout
+
+\begin_layout Standard
+Also, never do .
+\emph on
+/configure
+\emph default
+, though it seems intuitive.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Building gecko for B2G
+\end_layout
+
+\begin_layout Standard
+The process of building gecko for B2G is automated through the android build
+ system.
+ The building of gecko is invoked from the Android.mk file in gonk-misc folder.
+ The config file, 
+\emph on
+default-gecko-config 
+\emph default
+file is also found in the same folder.
+ The main configuration options to be noted, apart from the standard option:
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --with-arch=armv6 
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --with-fpu=toolchain-default # In case you are not sure of
+ the fpu
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --disable-neon # In case the processor doesnt have neon processor
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --disable-methodjit # MethodJIT may give rise to some illegal
+ instructions error.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Debugging using logging
+\end_layout
+
+\begin_layout Standard
+An alternative to gdb is using the traditional 'print debugging', i.e, using
+ print statements to debug the program.
+ To print statements, the android logging function will be used.
+ This prints the statements to android logcat.
+ The following lines must be included to log the statements to logcat
+\end_layout
+
+\begin_layout LyX-Code
+#include 
+\begin_inset Quotes eld
+\end_inset
+
+android/log.h
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+#define LOG(args...) __android_log_print(ANDROID_LOG_INFO, <logtag>, ##args)
+\end_layout
+
+\begin_layout Standard
+The logtag is user defined.
+ An example would be 
+\begin_inset Quotes eld
+\end_inset
+
+gecko_egl
+\begin_inset Quotes erd
+\end_inset
+
+ if EGL related logging is required.
+ To log a statement, simple invoke 
+\emph on
+LOG
+\emph default
+ with the desired statement.
+ The format of the statement is similar to printf statement.
+ Example:
+\end_layout
+
+\begin_layout LyX-Code
+LOG(
+\begin_inset Quotes eld
+\end_inset
+
+This statement will be logged in android logcat
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Standard
+In most of the files, the android/log.h file will be included.
+ Hence the 
+\family typewriter
+\emph on
+#define 
+\emph default
+alone should be enough
+\end_layout
+
+\begin_layout Standard
+For logging in javascript files, use 
+\emph on
+dump
+\emph default
+ function.
+ Same as printf, the statements will be printed out in the android logcat.
+ Example:
+\end_layout
+
+\begin_layout LyX-Code
+dump(
+\begin_inset Quotes eld
+\end_inset
+
+Logging in java script
+\backslash
+n
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\end_body
+\end_document
