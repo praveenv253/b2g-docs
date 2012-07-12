@@ -1,0 +1,119 @@
+**************************************************************************************************************************************************************************
+1) Prerequisites
+The code-base of B2G is very large. Thus we will require lots of tools to understand the code and debug the code.
+Languages used :
+
+Gonk  - C, C++
+Gecko - C, C++
+Gaia  - html, CSS, Javascript - These can be postponed until B2G starts on the phone
+
+A through C, C++ is required.
+
+Other non-language tools required are:
+
+1) Bash -	To understand and write bash files. Eg config.sh, flash.sh etc.
+			As the code base is large, bash scripting will be useful in debugging the code.
+			Eg. Locate <file_name> - locates the file  
+				Grep - Search word patterns in a file or group of files
+			Bash scripting will also be handy to automate certain tasks
+			
+Tutorial - www.freeos.com/guides/lsst/
+
+2) Make -	This file is used to compile the code. This reduces the compilation time during recompilation
+			This file indirectly helps us to understand various dependicies and interconnections between files
+			One of the most important makefile id Android.mk. This will be explained later. Other important make files are BoardConfig.mk, AndroidBoard.mk etc
+			When one we add C++( or C ) files, we have to add it in the corresponding MakeFile
+			
+			Note on Android.mk:
+				While building B2G, it searches all the folders recursively for Android.mk file. Thus most of the folders have Android.mk File
+				This file has the main environment variables
+				Thus information of a folder is hidden in its Android.mk file.
+				Many times we want to leave a part of code while compling because of the time taken by that part of the code. Simplest way is to rename Android.mk 
+				to Android.mk.bkp. This is usually done to gaia and gonk-misc
+	
+Complete Documentation	- http://www.gnu.org/software/make/manual/make.html#Introduction		
+Short tutorial			- http://wlug.org.nz/MakefileHowto
+
+3) Git ( like svn )		- This is a version control tool. This is helps us to keep track of all the changes made and to recall versions when required.
+						  This is handy when the code size is huge.
+Tutorial - http://git-scm.com/book/
+
+4) ADB ( Same as of that of Android ) - This is command line tool through which we can communicate with the device. This is like having shell access to Linux on phone. 		This contains most of the important commands from bash shell.
+		Eg : We can push/pull files and folders from the computer( server ) to/from mobile ( client)
+			 adb logcat contains all the logs from gonk, gecko, gaia. Thus all the errors and warnings can be noted.
+			 We can even add our own LOG messages in the code. Thus this is a essential method to debug.
+Documentation - http://developer.android.com/tools/help/adb.html
+
+
+5) gdbserver - This a very simple tool at the same time, very important tool, which will help us to get the exact line in the code which has errors. This can also be 					used to set break points in the code.
+				gdbserver is started using ./run-gdb.sh. Understanding run-gdb.sh is important.
+				
+6) Linux - We strongly recommend Linux as the operating system to be used for developing. According to the B2G docs 64 bit linux and version > 11.10 is is preffered.
+	Speed - Compilation will take a lot of time, thus a fast comp is preffered.
+
+**************************************************************************************************************************************************************************
+3 Code sources
+
+Github - This is the main source for various code modules.
+	a) https://github.com/mozilla-b2g
+			https://github.com/mozilla-b2g/B2G 			- Source code for b2g	
+			https://github.com/mozilla-b2g/b2g-manifest	- Sample manifest file
+			https://github.com/mozilla-b2g/wpa_supplicant_8_lib - wpa supplicant for armv7 (Verify).
+	b) https://github.com/CyanogenMod - This contains vendor and device folders for various standard mobiles. This is the first place to
+			to search for STOCK folders
+			
+	c) https://github.com/alanorth - This is contains vendor and device folders for Huawei and some other standard phones
+	
+	c2) https://github.com/Psyke83 - This contains some more files pertaining huawei.
+		
+	d) https://github.com/ColdFusionX - This also certain important folders
+	
+	e) https://github.com/tilal6991 - As of now this contains some folders the above contain.
+	
+	f) https://github.com/CommonFusionX - Contains fewmore commonly used files.
+		
+		The above three are sources to find standard files. Always search this before searching whole of net.
+		
+	g) https://github.com/apitrace - Contains files for debugging of OpenEGL
+	
+	i) https://github.com/android - contains image of android. It will be rarely used. This is helpful when u want to change some folders which have their repo only here
+	
+	android.googlesource.com - Since B2G has a stripped down version of android, many of problems can be solved using android documentation.
+	
+	some other useful sites - codeaurora.org
+	
+**************************************************************************************************************************************************************************
+4 Information sources
+
+The above mentioned sites are mainly for code source. But we will need answers to lot of frequently araising doubts and errors.
+
+1) Mozilla wiki (wiki.mozilla.org/B2G) - This is the starting point to know B2G basics. Some of the important links are
+The rough order of importance
+B2G/Architecture 
+B2G/Porting - VERY IMPOTANT
+B2G/gdb
+B2G/Hacking
+B2G/Debugging OpenGL
+B2G/DeveloperPhone
+B2G/FAQ
+B2G/QA
+
+2) Mozilla developer network (https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/) - This site is being updated currently.
+
+3) XDA Forums (forum.xda-developers.com) - This is the most important site for all the queries.
+		a) Lots of Custom Roms are available
+		b) Lots of common build errors are posted and solved
+		c) It is adviced to create a account if u have not dont have one cause questions are answered fast
+		e) Lots of tutorials are availble - Eg. Rooting a mobile, how to use ClockWordMod.
+
+4) General Information on mobiles
+	gsmarena.com - contains information for a layman. Eg, RAM, GPU, etc. Quick reference
+	en.wikipedia.org - Major phones have a wiki page. This has lot more information than gsmarena
+	
+5)Others
+	http://kobablog.wordpress.com/2011/05/19/start-up-sequence-of-system-server-of-android-memo/ - Basics of android debugging
+	http://linux-encyclopedia.blogspot.in/2011/05/android-init-language.html - Basics of init script. Must read.
+	http://www.freeyourandroid.com/guide/introdution_to_edify - Edify script, useful when u want to add Custom-Rom i.e, port ur phone without tools like heimdall,
+	fastboot.
+**************************************************************************************************************************************************************************
+
