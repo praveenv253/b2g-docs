@@ -2,7 +2,7 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass article
+\textclass paper
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -201,7 +201,7 @@ Gaia - html, CSS, Javascript - These can be postponed until B2G starts on
 A thorough knowledge of C, C++ is required.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Other non-language tools required are:
 \end_layout
 
@@ -714,7 +714,7 @@ target "http://www.freeyourandroid.com/guide/introdution_to_edify"
 Choosing Phone
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Ideos
 \end_layout
 
@@ -752,7 +752,7 @@ Armv6 Processor - B2G developers are concentrating on armv7, thus lots of
 It has no GPU
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 HTC Explorer
 \end_layout
 
