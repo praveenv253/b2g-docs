@@ -2,7 +2,7 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass amsart
+\textclass article
 \use_default_options true
 \begin_modules
 theorems-ams
@@ -31,14 +31,23 @@ figs-within-sections
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_amsmath 1
 \use_esint 1
 \use_mhchem 1
 \use_mathdots 1
-\cite_engine basic
+\cite_engine natbib_authoryear
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -48,6 +57,10 @@ figs-within-sections
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 2.5cm
+\topmargin 2cm
+\rightmargin 2.5cm
+\bottommargin 3cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -64,6 +77,15 @@ figs-within-sections
 \end_header
 
 \begin_body
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
 
 \begin_layout Section
 Introduction
@@ -144,6 +166,614 @@ Apps written in HTML5
 
 \begin_layout Subsection
 Complete control over low-level devices and API
+\end_layout
+
+\begin_layout Section
+Prerequisites 
+\end_layout
+
+\begin_layout Standard
+The code-base of B2G is very large.
+ Thus we will require lots of tools to understand the code and debug the
+ code.
+\end_layout
+
+\begin_layout Standard
+Languages used :
+\end_layout
+
+\begin_layout Enumerate
+Gonk - C, C++ 
+\end_layout
+
+\begin_layout Enumerate
+Gecko - C, C++ 
+\end_layout
+
+\begin_layout Enumerate
+Gaia - html, CSS, Javascript - These can be postponed until B2G starts on
+ the phone
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+A thorough knowledge of C, C++ is required.
+\end_layout
+
+\begin_layout Subsection*
+Other non-language tools required are:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Bash
+\series default
+ - We will using bash to understand and write bash files.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some of the important bash scripts are :-
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+config.sh
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+This script calls the repo functions and updates the code.
+ The repo function in-turn refers to the manifest file.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+flash.sh etc.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+This script flashes the images on the mobile.
+ It uses heimdall/fastboot to accomplish the work.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+build.sh
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+As the code base is large, bash scripting will be useful in debugging the
+ code.
+\begin_inset Newline newline
+\end_inset
+
+Some impoertant bash commands
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+locate 
+\series default
+<file_name> - locates the file 
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+grep
+\series default
+ <pattern> - Search word patterns in a file or group of files.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Bash scripting will also be handy to automate certain tasks.
+\end_layout
+
+\begin_layout Itemize
+Tutorial - www.freeos.com/guides/lsst/
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Make
+\series default
+ - This file is used to compile the code.
+ This reduces the compilation time during recompilation.
+ One of the most important makefile is Android.mk.
+ This will be explained later.
+ Other important make files are BoardConfig.mk, AndroidBoard.mk etc.
+ When we new code in a folder, the complication procedure has to added to
+ the respective Android.mk
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Note on Android.mk: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+When we build B2G, it searches all the folders and subfoders recursively
+ for Android.mk file.
+\end_layout
+
+\begin_layout Enumerate
+This file defines enivornment variables.
+\end_layout
+
+\begin_layout Enumerate
+First step to understand the conntents of a folder is to read it Android.mk.
+ This gives us the brief idea of the relations between the files.
+\end_layout
+
+\begin_layout Enumerate
+Compilation of B2G takes a lot of time.
+ We can reduce it by compiling only a part of code.
+ We can rename Android.mk in a particular folder to Android.mk.bkp if we want
+ to avoid the compiling that part of code.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Complete Documentation - http://www.gnu.org/software/make/manual/make.html#Introduc
+tion
+\end_layout
+
+\begin_layout Enumerate
+Short tutorial - http://wlug.org.nz/MakefileHowto
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Git
+\series default
+ ( similar svn ) - This is a version control tool.
+ This is helps us to keep track of all the changes made and to recall versions
+ when required.
+ This is handy when the code size is huge.
+ Tutorial - http://git-scm.com/book/
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+ADB
+\series default
+ - This is command line tool through which we can communicate with the device.
+ This is like having shell access to Linux on phone.
+ This has few commands compared to bash shell.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+We can push/pull files and folders from the computer( server ) to/from mobile
+ ( client)
+\end_layout
+
+\begin_layout Enumerate
+'adb logcat' contains all the logs from gonk, gecko, gaia.
+ Thus all the errors and warnings can be noted.
+ We can even add our own LOG messages in the code.
+ Thus this is a essential method to debug.
+\end_layout
+
+\begin_layout Enumerate
+Documentation - http://developer.android.com/tools/help/adb.html
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+gdbserver
+\series default
+ - This a very simple tool at the same time, very important tool.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Gives the exact line in the code which has errors.
+\end_layout
+
+\begin_layout Enumerate
+Used to set break points in the code.
+\end_layout
+
+\begin_layout Enumerate
+run-gdb.sh is used to start gdbserver in the mobbile.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Linux 
+\series default
+- We strongly recommend Linux as the operating system to be used for developing.
+ According to the B2G docs, 64 bit linux and version > 11.10 is is prefered.
+ Compilation will take a lot of time, thus a fast comp is prefered.
+\begin_inset Newline newline
+\end_inset
+
+Understanding the Linux architecture will be an advantage.
+\end_layout
+
+\begin_layout Section
+Code sources
+\end_layout
+
+\begin_layout Description
+Github - This is the main source for various code modules.https://github.com/mozil
+la-b2g 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mozilla-b2g/B2G "
+
+\end_inset
+
+- Source code for b2g
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mozilla-b2g/b2g-manifest"
+
+\end_inset
+
+- Sample manifest file
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mozilla-b2g/wpa_supplicant_8_lib"
+
+\end_inset
+
+- wpa supplicant version 8.
+ This can be set in BoardConfig.sh (Verify).
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/CyanogenMod"
+
+\end_inset
+
+- This contains vendor and device folders for various standard mobiles.
+ This is the first place to to search for STOCK folders
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/alanorth"
+
+\end_inset
+
+- This is contains vendor and device folders for Huawei and some other standard
+ phones
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/Psyke83"
+
+\end_inset
+
+- This contains some more files pertaining huawei.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/ColdFusionX"
+
+\end_inset
+
+- This also certain important folders.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/tilal6991"
+
+\end_inset
+
+- As of now this contains some folders the above contain.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/CommonFusionX"
+
+\end_inset
+
+- Contains fewmore commonly used files.
+\end_layout
+
+\begin_layout Standard
+The above three are sources to find standard files.
+ Always search this before searching whole of net.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/apitrace"
+
+\end_inset
+
+- Contains files for debugging of OpenEGL
+\end_layout
+
+\begin_layout Itemize
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/android"
+
+\end_inset
+
+- contains image of android.
+ It will be rarely used.
+ This is helpful when u want to change some folders which have their repo
+ only here
+\end_layout
+
+\begin_layout Description
+android.googlesource.com - Since B2G has a stripped down version of android,
+ many of problems which araises during compilation will have its solution
+ in android documentation.
+\end_layout
+
+\begin_layout Description
+Some
+\begin_inset space ~
+\end_inset
+
+other
+\begin_inset space ~
+\end_inset
+
+useful
+\begin_inset space ~
+\end_inset
+
+sites -
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+codeaurora.org 
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Information sources
+\end_layout
+
+\begin_layout Standard
+The above mentioned sites are mainly for code source.
+ But we will need answers to lot of frequently araising doubts and errors.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Mozilla wiki
+\series default
+ (
+\begin_inset CommandInset href
+LatexCommand href
+target "wiki.mozilla.org/B2G"
+
+\end_inset
+
+) - This is the starting point to know B2G basics.
+ Some of the important links are The rough order of importance B2G/Architecture
+ B2G/Porting - VERY IMPOTANT B2G/gdb B2G/Hacking B2G/Debugging OpenGL B2G/Develo
+perPhone B2G/FAQ B2G/QA
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Mozilla developer network 
+\series default
+(
+\begin_inset CommandInset href
+LatexCommand href
+target "https://developer.mozilla.org/en/Mozilla/Boot_to_Gecko/"
+
+\end_inset
+
+) - This site is being updated currently.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+XDA Forums
+\series default
+ (
+\begin_inset CommandInset href
+LatexCommand href
+target "forum.xda-developers.com"
+
+\end_inset
+
+) - This is the most important site for all the queries.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Lots of Custom Roms are available
+\end_layout
+
+\begin_layout Enumerate
+Lots of common build errors are posted and solved 
+\end_layout
+
+\begin_layout Enumerate
+It is adviced to create a account if u have not dont have one because questions
+ posted here are answered soon
+\end_layout
+
+\begin_layout Enumerate
+Lots of tutorials are availble - Eg.
+ Rooting a mobile, how to use ClockWordMod.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+General Information 
+\series default
+( gsmarena.com )- contains information for a layman.
+ Eg, RAM, GPU, etc.
+ Quick reference
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+en.wikipedia.org
+\series default
+ - Major phones have a wiki page.
+ This has lot more information than gsmarena 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Others 
+\series default
+-
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "http://kobablog.wordpress.com/2011/05/19/start-up-sequence-of-system-server-of-android-memo/"
+
+\end_inset
+
+- Basics of android debugging
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "http://linux-encyclopedia.blogspot.in/2011/05/android-init-language.html "
+
+\end_inset
+
+- Basics of init script.
+ Must read.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.freeyourandroid.com/guide/introdution_to_edify"
+
+\end_inset
+
+- Edify script, useful when u want to add Custom-Rom i.e, port ur phone without
+ tools like heimdall, fastboot.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Choosing Phone
+\end_layout
+
+\begin_layout Subsection*
+Ideos
+\end_layout
+
+\begin_layout Subsubsection*
+Advantages
+\end_layout
+
+\begin_layout Enumerate
+Low Cost - Rs 4000/-
+\end_layout
+
+\begin_layout Enumerate
+CynogenMod ICS was available
+\end_layout
+
+\begin_layout Enumerate
+The vendor and device folder was available on github
+\end_layout
+
+\begin_layout Enumerate
+Support - This phone had good support on the internet
+\end_layout
+
+\begin_layout Subsubsection*
+Disadvantages
+\end_layout
+
+\begin_layout Enumerate
+Armv6 Processor - B2G developers are concentrating on armv7, thus lots of
+ changes are required to build the code for armv6 processor.
+ Their is no official toolchain available for armv6.
+\end_layout
+
+\begin_layout Enumerate
+It has no GPU
+\end_layout
+
+\begin_layout Subsection*
+HTC Explorer
+\end_layout
+
+\begin_layout Subsubsection*
+Advantages
+\end_layout
+
+\begin_layout Enumerate
+Armv7 Processor
+\end_layout
+
+\begin_layout Enumerate
+Low cost - Rs 7,500/-
+\end_layout
+
+\begin_layout Enumerate
+Custom-Rom for ICS was available on xda forums
+\end_layout
+
+\begin_layout Enumerate
+The vendor and device folder was available on github
 \end_layout
 
 \begin_layout Section
@@ -690,6 +1320,890 @@ system
 Contains most of the binaries used by the phone.
  These are compiled without debug symbols in order to make them as light
  as possible.
+\end_layout
+
+\begin_layout Section
+Gecko build system
+\end_layout
+
+\begin_layout Standard
+Building gecko is different compared to the android build system.
+ The gecko build system comprises of two main files at the user end, configure
+ and client.mk.
+ client.mk is the make file for building the source.
+ configure, as the name suggests configures the build system according to
+ the input configuration option.
+\end_layout
+
+\begin_layout Standard
+To build gecko, use the following command:
+\end_layout
+
+\begin_layout LyX-Code
+$ cd path/to/gecko
+\end_layout
+
+\begin_layout LyX-Code
+$ make -f client.mk <options>
+\end_layout
+
+\begin_layout Standard
+In case options are not given, it builds firefox.
+ The options field will decide the app to build, the toolchain to use, the
+ architecture to build for and so on.
+ Some of the options are:
+\end_layout
+
+\begin_layout LyX-Code
+--with-arch=<target-arch> # For example, the present project target-arch
+ is armv6
+\end_layout
+
+\begin_layout LyX-Code
+--enable-application=<app> # b2g in our case
+\end_layout
+
+\begin_layout LyX-Code
+--enable-media-plugins
+\end_layout
+
+\begin_layout Standard
+However, a typical 'non firefox' build requires a lot of options to be passed.
+ Hence we use a config file, which is called MOZCONFIG file.
+ The MOZCONFIG file will have two types of configuration options:
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+mk_add_options: 
+\emph default
+These will be passed to the make file.
+ Some options are MOZ_MAKE_FLAGS, MOZ_OBJDIR
+\end_layout
+
+\begin_layout Enumerate
+
+\emph on
+ac_add_options: 
+\emph default
+These will be passed to the configuration file.
+ Some options are --with-arch=, --with-thumb= .
+\end_layout
+
+\begin_layout Subsection*
+Object directory
+\end_layout
+
+\begin_layout Standard
+The compiled output is dumped in the object directory.
+ The object directory is passed as an option to client.mk.
+ A typical example is:
+\end_layout
+
+\begin_layout LyX-Code
+$ MOZ_OBJDIR=../objdir-gecko make -f client.mk
+\end_layout
+
+\begin_layout Standard
+This will create a directory called 
+\emph on
+objdir-gecko 
+\emph default
+at the top level, in which all the compiled output will be stored.
+ Make sure that object directory is not the same directory as the gecko
+ folder.
+ This may give rise to lot of errors.
+\end_layout
+
+\begin_layout Standard
+Also, never do .
+\emph on
+/configure
+\emph default
+, though it seems intuitive.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Building gecko for B2G
+\end_layout
+
+\begin_layout Standard
+The process of building gecko for B2G is automated through the android build
+ system.
+ The building of gecko is invoked from the Android.mk file in gonk-misc folder.
+ The config file, 
+\emph on
+default-gecko-config 
+\emph default
+file is also found in the same folder.
+ The main configuration options to be noted, apart from the standard option:
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --with-arch=armv6 
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --with-fpu=toolchain-default # In case you are not sure of
+ the fpu
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --disable-neon # In case the processor doesnt have neon processor
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --disable-methodjit # MethodJIT may give rise to some illegal
+ instructions error.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Debugging using logging
+\end_layout
+
+\begin_layout Standard
+An alternative to gdb is using the traditional 'print debugging', i.e, using
+ print statements to debug the program.
+ To print statements, the android logging function will be used.
+ This prints the statements to android logcat.
+ The following lines must be included to log the statements to logcat
+\end_layout
+
+\begin_layout LyX-Code
+#include 
+\begin_inset Quotes eld
+\end_inset
+
+android/log.h
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+#define LOG(args...) __android_log_print(ANDROID_LOG_INFO, <logtag>, ##args)
+\end_layout
+
+\begin_layout Standard
+The logtag is user defined.
+ An example would be 
+\begin_inset Quotes eld
+\end_inset
+
+gecko_egl
+\begin_inset Quotes erd
+\end_inset
+
+ if EGL related logging is required.
+ To log a statement, simple invoke 
+\emph on
+LOG
+\emph default
+ with the desired statement.
+ The format of the statement is similar to printf statement.
+ Example:
+\end_layout
+
+\begin_layout LyX-Code
+LOG(
+\begin_inset Quotes eld
+\end_inset
+
+This statement will be logged in android logcat
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Standard
+In most of the files, the android/log.h file will be included.
+ Hence the 
+\family typewriter
+\emph on
+#define 
+\emph default
+alone should be enough
+\end_layout
+
+\begin_layout Standard
+For logging in javascript files, use 
+\emph on
+dump
+\emph default
+ function.
+ Same as printf, the statements will be printed out in the android logcat.
+ Example:
+\end_layout
+
+\begin_layout LyX-Code
+dump(
+\begin_inset Quotes eld
+\end_inset
+
+Logging in java script
+\backslash
+n
+\begin_inset Quotes erd
+\end_inset
+
+);
+\end_layout
+
+\begin_layout Section
+Pre-installation procedure
+\end_layout
+
+\begin_layout Subsubsection*
+Galaxy S2
+\end_layout
+
+\begin_layout Standard
+Refer galaxy-s2-port.pdf
+\end_layout
+
+\begin_layout Subsection*
+ClockWordMod ( CWM )
+\end_layout
+
+\begin_layout Subsubsection*
+
+\series bold
+What is ClockWordMod?
+\end_layout
+
+\begin_layout Standard
+ClockWorkMod(CWM) is a custom Android recovery, which helps us to perform
+ advanced recoveries, maintenence.
+ It is a good practice to install CWM while working with Android phone with
+ root access.
+\end_layout
+
+\begin_layout Standard
+Good tutorial - 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.addictivetips.com/mobile/what-is-clockworkmod-recovery-and-how-to-use-it-on-android-complete-guide/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Installation
+\end_layout
+
+\begin_layout Subsubsection*
+Method 1 
+\end_layout
+
+\begin_layout Standard
+Get fastboot from the android platform tools Get ClockworkMod recovery image
+ from 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://goo-inside.me/devs/aorth/roms/u8150/clockworkmod_5.0.2.8_u8150.img"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Get the phone into fastboot mode by pressig the power, volume down and end
+ call (red) keys simultaneously.
+\end_layout
+
+\begin_layout Enumerate
+Perform the following command in terminal: fastboot flash recovery /path/to/cloc
+kworkmod_5.0.2.8_u8150.img
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ClockworkMod Recovery is installed.
+\end_layout
+
+\begin_layout Enumerate
+Switch off the mobile.
+\end_layout
+
+\begin_layout Enumerate
+Create a backup image by going to the recovery section.
+ For example press the power, volume up and pick call (green) buttons simultaneo
+usly.
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+After this step, we have secured our phone and it can be recovered from
+ all possible situations.
+\end_layout
+
+\begin_layout Subsubsection*
+Method 2
+\end_layout
+
+\begin_layout Enumerate
+Get the ClockWorkMod recovery zip folder from internet
+\end_layout
+
+\begin_layout Enumerate
+Add the zip folder in sd card of the mobile.
+\end_layout
+
+\begin_layout Enumerate
+To install the ClockWorkMod
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Switch off the mobile.
+\end_layout
+
+\begin_layout Enumerate
+Press the power, volume up and pick call (green) buttons simultaneously.
+\end_layout
+
+\begin_layout Enumerate
+Choose the option to 'install sd card ', choose the ClockWorkMod zip folder
+ and install it.
+\end_layout
+
+\begin_layout Enumerate
+Now we can create recovery image by going to the recovery section.
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Subsection*
+Cyanogenmod 9
+\end_layout
+
+\begin_layout Subsubsection*
+What is cyanogenmod?
+\end_layout
+
+\begin_layout Standard
+CyanogenMod is a customized, aftermarket firmware distribution for several
+ Android devices.
+ It is desgined to increase the performance of the mobile and offers new
+ features.
+\end_layout
+
+\begin_layout Subsubsection*
+What is cyanogenmod 9?
+\end_layout
+
+\begin_layout Standard
+It is the a custom mod for android 4.0.4.
+\end_layout
+
+\begin_layout Subsection*
+Installation
+\end_layout
+
+\begin_layout Standard
+Installation of Cyanogenmod similar to ClockWorkMod.
+\end_layout
+
+\begin_layout Section
+Kernel
+\end_layout
+
+\begin_layout Subsubsection*
+What is kernel?
+\end_layout
+
+\begin_layout Standard
+Kernel is the main part of Operating System.
+ Along with other device drivers, it provides hardware abstraction layer
+ ( low-level API's).
+ The main tasks of kernel are
+\end_layout
+
+\begin_layout Enumerate
+Allocate rescources to different processes.
+\end_layout
+
+\begin_layout Enumerate
+Manage memory.
+\end_layout
+
+\begin_layout Enumerate
+Handle system calls.
+\end_layout
+
+\begin_layout Enumerate
+Handle various devices
+\end_layout
+
+\begin_layout Standard
+Further information can be found on 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://en.wikipedia.org/wiki/Kernel_%28computing%29#Device_management"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+How to choose the right kernel for the mobile phone?
+\end_layout
+
+\begin_layout Standard
+Most of the companies officially release kernels for their mobiles for a
+ particular version of Android.
+ A company doesnt necessarily release kernels for future versions of Android,
+ for a specific mobile.
+ For example Huawei released 
+\emph on
+froyo
+\emph default
+ kernel for 
+\emph on
+ideos u8150
+\emph default
+ but they did not release kernel for 
+\emph on
+ics
+\emph default
+.
+ Thus we have to find the kernel from other relaible sources like Cyanogenmod.
+ Many of the relaible links have been documented under the heading 'Code
+ Sources'.
+\end_layout
+
+\begin_layout Subsubsection*
+How to add a custom kernel to the mobile?
+\end_layout
+
+\begin_layout Subsubsection*
+Method 1
+\end_layout
+
+\begin_layout Standard
+If the kernel image is availabe.
+ Add the custom kernel to the path device/<device>/<name>/prebuilt/ and
+ add a rule to make kernel.
+ Add the following line can be added to device.mk file to make a rule to
+ make kernel
+\end_layout
+
+\begin_layout LyX-Code
+PRODUCT_COPY_FILE += 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+device/<device>/<name>/prebuilt/kernel:kernel
+\end_layout
+
+\begin_layout Subsubsection*
+Method 2
+\end_layout
+
+\begin_layout Standard
+If kernel source is available, include the following line in AndroidBoard.mk
+\end_layout
+
+\begin_layout LyX-Code
+ifeq ($(KERNEL_DEFCONFIG),)   
+\end_layout
+
+\begin_layout LyX-Code
+KERNEL_DEFCONFIG := cyanogen_u8150_defconfig
+\end_layout
+
+\begin_layout LyX-Code
+endif
+\end_layout
+
+\begin_layout LyX-Code
+include kernel/AndroidKernel.mk
+\end_layout
+
+\begin_layout LyX-Code
+file := $(INSTALLED_KERNEL_TARGET)
+\end_layout
+
+\begin_layout LyX-Code
+ALL_PREBUILT += $(file)
+\end_layout
+
+\begin_layout LyX-Code
+$(file) : $(TARGET_PREBUILT_KERNEL) | $(ACP)
+\end_layout
+
+\begin_layout LyX-Code
+    $(transform-prebuilt-to-target)include 
+\end_layout
+
+\begin_layout Section
+The ARM architecture
+\end_layout
+
+\begin_layout Standard
+ARM (Advanced Risc Machine) is a RISC processor architecture, developed
+ by ARM holdings(Quoted from wikipedia).
+ Unlike Intel, which develops the architecture as well as the silicon chip,
+ ARM holdings onlu develops the architecture.
+ It licences its architecture to various companies who manufacture and sell
+ them.
+ Some of the companies include Atmel, QualComm, Broadcom, Freescale etc.
+ Companies like Qualcomm and Broadcomm make System on a Chip, SoC.
+ The SoCs contain the main application processor along with the telephone
+ modem and a digital signal processor.
+\end_layout
+
+\begin_layout Subsection*
+Instruction set
+\end_layout
+
+\begin_layout Standard
+Instruction sets is the language of the processor.
+ ARM has evolved its instruction set from 
+\emph on
+armv1 
+\emph default
+to 
+\emph on
+armv7, 
+\emph default
+with 
+\emph on
+armv8 
+\emph default
+being developed now.The instruction sets are backward compatible but not
+ forward compatible.
+ 
+\emph on
+armv6
+\emph default
+ code will work on 
+\emph on
+armv7
+\emph default
+ processor but the vice versa is not true.
+ This will be one of the main issues when porting a code to an 
+\emph on
+armv6
+\emph default
+ platform which has been written for 
+\emph on
+armv7
+\emph default
+ platform.
+ This will be the source for illegal instructions in the program.
+ 
+\end_layout
+
+\begin_layout Standard
+Gecko, natively did not support armv6 instruction set.
+ However, it supports it now.
+ The JIT code may also cause some illegal instructions.
+ Disabling it will make the code slow, but will solve the problem.
+\end_layout
+
+\begin_layout Subsection*
+Floating point unit
+\end_layout
+
+\begin_layout Standard
+Apart from the application processor, the SoCs will have a floating point
+ unit.
+ 
+\emph on
+armv6
+\emph default
+ architecture is complimented with Vector Floating Point unit.
+ 
+\emph on
+armv7 
+\emph default
+on the other hand is complimented with NEON processor.
+ They are not compatible with each other.
+ The neon feature can be disabled when compiling gecko to make sure the
+ code runs on non- NEON processors.
+\end_layout
+
+\begin_layout Section
+Runtime debugging tools
+\end_layout
+
+\begin_layout Standard
+Once B2G is flashed, it will be necessary to debug it for errors.
+ The following set of tools should help to debug the mobile, from booting
+ to first sight of homescreen
+\end_layout
+
+\begin_layout Subsection*
+Kernel logging
+\end_layout
+
+\begin_layout Standard
+It is possible to get the kernel messages onto the mobile screen.
+ This will be useful if the kernel gets loaded but the mobile gets stuck
+ at a certain point before b2g process starts.
+ To do so, the kernel messages must be redirected to standard output, 
+\emph on
+tty0.
+
+\emph default
+ It must be changed in the 
+\emph on
+BoardConfig.mk 
+\emph default
+file.
+ The following line should be edited
+\end_layout
+
+\begin_layout LyX-Code
+BOARD_KERNEL_CMDLINE := mem=211M console=ttyMSM2,115200n8 androidboot.hardware=u8
+150
+\end_layout
+
+\begin_layout Standard
+to 
+\end_layout
+
+\begin_layout LyX-Code
+BOARD_KERNEL_CMDLINE := mem=211M console=tty0,115200n8 androidboot.hardware=u8150
+\end_layout
+
+\begin_layout Standard
+This would output all the kernel messages to the mobile screen.
+ However, the messages scroll very fast.
+ A workaround would be to take a video of the boot process and split the
+ video into images and analyse them
+\end_layout
+
+\begin_layout Subsection*
+Android Debug Bridge
+\end_layout
+
+\begin_layout Standard
+Android Debug Bridge (adb) is a versatile command line tool that lets you
+ communicate with an emulator instance or connected Android-powered device(
+ Quoted from 
+\emph on
+developer.android.com
+\emph default
+ ).
+ ADB can be used for the following:
+\end_layout
+
+\begin_layout Enumerate
+Installing applications
+\end_layout
+
+\begin_layout Enumerate
+Copying files from host to mobile and vice versa
+\end_layout
+
+\begin_layout Enumerate
+Getting a log
+\end_layout
+
+\begin_layout Enumerate
+Getting a shell for the mobile
+\end_layout
+
+\begin_layout Standard
+The last feature can be used for debugging purpose.
+ The shell is a linux shell, with all the basic linux commands.
+ Through shell, the following two tools can be used for debugging
+\end_layout
+
+\begin_layout Description
+dmesg gives the kernel logging.
+ This can be used to find out if the low level drivers are working and that
+ the file systems are working as expected
+\end_layout
+
+\begin_layout Description
+logcat provides a mechanism for collecting and viewing system debug output.
+ Logs from various applications and portions of the system are collected
+ in a series of circular buffers, which then can be viewed and filtered
+ by the logcat command.
+\end_layout
+
+\begin_layout Subsection*
+GDB
+\end_layout
+
+\begin_layout Standard
+The gdb program is the most prefered way of debugging errors.
+ Unlike a normal debugging session, in which a program is compiled and gdb
+ is started, debugging for mobile requires a host program and a target program.
+ A 
+\emph on
+gdbserver 
+\emph default
+program is required on the target mobile and 
+\emph on
+gdb
+\emph default
+ is required on the host.
+ The 
+\emph on
+gdbserver 
+\emph default
+program must be forwarded to a port and should be attached to a program
+ to debug it.
+ 
+\emph on
+gdb
+\emph default
+ should be listening to the same port to output the debug information onto
+ the console.
+ A simple implementation would be
+\end_layout
+
+\begin_layout LyX-Code
+adb shell LD_LIBRARY_PATH=/data/local/gdbserver :8080 /system/b2g/b2g
+\end_layout
+
+\begin_layout LyX-Code
+gdb -x b2g.gdbinit out/target/product/u8150/obj/objdir-gecko/dist/bin/b2g
+\end_layout
+
+\begin_layout Standard
+The gdbinit file defines the path to look for symbols and executables.
+\end_layout
+
+\begin_layout Standard
+The file 
+\emph on
+run-gdb.sh 
+\emph default
+file in the B2G directory automates this whole process.
+\end_layout
+
+\begin_layout Section
+Getting help
+\end_layout
+
+\begin_layout Standard
+The following source will prove invaluable when information about a particular
+ procedure is required
+\end_layout
+
+\begin_layout Subsection*
+Internet Relay Chat
+\end_layout
+
+\begin_layout Standard
+IRC is used for real time internet text messaging.
+ It is designed for group communication in discussion forums.
+ For the B2G project, the following IRC servers and the respective channels
+ are helpful
+\end_layout
+
+\begin_layout Enumerate
+Freenode(irc.freenode.org):
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+#android-root: For getting help on android
+\end_layout
+
+\begin_layout Enumerate
+#cyanogenmod-dev: For getting help on developing cyanogenmod
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Mozilla(irc.mozilla.org):
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+#b2g: Help on B2G development
+\end_layout
+
+\begin_layout Enumerate
+#jsapi: Help on java script engine
+\end_layout
+
+\begin_layout Enumerate
+#mobile: For mobile based help.
+ Help on fennec, firefox for android can be found here
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "Mibbit"
+target "mibbit.com"
+
+\end_inset
+
+is a famous IRC client.
+ For freenode, use 
+\begin_inset CommandInset href
+LatexCommand href
+name "webchat"
+target "webchat.freenode.net"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+XChat is a good standalone IRC client.
+\end_layout
+
+\begin_layout Subsection*
+Mailing list
+\end_layout
+
+\begin_layout Standard
+The mailing list can be used for more non interactive help.
+ People post questions and experts answer them.
+ Some of the mailing list:
+\end_layout
+
+\begin_layout Enumerate
+dev-b2g-request@list.mozilla.org
+\end_layout
+
+\begin_layout Subsection*
+XDA forum
+\end_layout
+
+\begin_layout Standard
+The XDA forum is a community driven forum which focuses on android development
+ mainly.
+ Information about android mobiles, their kernels, and android development
+ can be obtained here.
+ Website: 
+\begin_inset CommandInset href
+LatexCommand href
+name "XDA forum"
+target "http://forum.xda-developers.com/"
+
+\end_inset
+
+
 \end_layout
 
 \end_body
