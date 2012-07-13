@@ -78,6 +78,10 @@ figs-within-sections
 
 \begin_body
 
+\begin_layout Title
+Porting B2G
+\end_layout
+
 \begin_layout Standard
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
@@ -253,7 +257,7 @@ As the code base is large, bash scripting will be useful in debugging the
 \begin_inset Newline newline
 \end_inset
 
-Some impoertant bash commands
+Some important bash commands
 \end_layout
 
 \begin_deeper
@@ -304,16 +308,16 @@ Note on Android.mk:
 
 \begin_deeper
 \begin_layout Enumerate
-When we build B2G, it searches all the folders and subfoders recursively
+When we build B2G, it searches all the folders and sub-folders recursively
  for Android.mk file.
 \end_layout
 
 \begin_layout Enumerate
-This file defines enivornment variables.
+This file defines environment variables.
 \end_layout
 
 \begin_layout Enumerate
-First step to understand the conntents of a folder is to read it Android.mk.
+First step to understand the contents of a folder is to read it Android.mk.
  This gives us the brief idea of the relations between the files.
 \end_layout
 
@@ -403,8 +407,8 @@ run-gdb.sh is used to start gdbserver in the mobbile.
 Linux 
 \series default
 - We strongly recommend Linux as the operating system to be used for developing.
- According to the B2G docs, 64 bit linux and version > 11.10 is is prefered.
- Compilation will take a lot of time, thus a fast comp is prefered.
+ According to the B2G docs, 64 bit linux and version > 11.10 is is preferred.
+ Compilation will take a lot of time, thus a fast comp is preferred.
 \begin_inset Newline newline
 \end_inset
 
@@ -434,22 +438,22 @@ target "https://github.com/mozilla-b2g/B2G "
 \begin_layout Enumerate
 \begin_inset CommandInset href
 LatexCommand href
-target "https://github.com/mozilla-b2g/b2g-manifest"
-
-\end_inset
-
-- Sample manifest file
-\end_layout
-
-\begin_layout Enumerate
-\begin_inset CommandInset href
-LatexCommand href
 target "https://github.com/mozilla-b2g/wpa_supplicant_8_lib"
 
 \end_inset
 
 - wpa supplicant version 8.
  This can be set in BoardConfig.sh (Verify).
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mozilla-b2g/b2g-manifest"
+
+\end_inset
+
+- Sample manifest file
 \end_layout
 
 \end_deeper
@@ -593,11 +597,39 @@ target "wiki.mozilla.org/B2G"
 \end_inset
 
 ) - This is the starting point to know B2G basics.
- Some of the important links are The rough order of importance B2G/Architecture
- B2G/Porting - VERY IMPOTANT B2G/gdb B2G/Hacking B2G/Debugging OpenGL B2G/Develo
-perPhone B2G/FAQ B2G/QA
+ Some of the important links are The rough order of importance 
 \end_layout
 
+\begin_deeper
+\begin_layout Itemize
+B2G/Architecture
+\end_layout
+
+\begin_layout Itemize
+B2G/Porting (very important)
+\end_layout
+
+\begin_layout Itemize
+B2G/gdb B2G/Hacking
+\end_layout
+
+\begin_layout Itemize
+B2G/Debugging OpenGL 
+\end_layout
+
+\begin_layout Itemize
+B2G/DeveloperPhone 
+\end_layout
+
+\begin_layout Itemize
+B2G/FAQ 
+\end_layout
+
+\begin_layout Itemize
+B2G/QA
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 
 \series bold
@@ -638,7 +670,7 @@ Lots of common build errors are posted and solved
 \end_layout
 
 \begin_layout Enumerate
-It is adviced to create a account if u have not dont have one because questions
+It is advised to create a account if u have not don't have one because questions
  posted here are answered soon
 \end_layout
 
@@ -1305,7 +1337,7 @@ root
 \end_layout
 
 \begin_layout Standard
-This contains the directory structure which goes into the / direcotry on
+This contains the directory structure which goes into the / directory on
  the phone.
  Gets compressed into ramdisk.img and then into boot.img.
  It also contains the final versions of files such as inti.rc, ueventd.rc
@@ -1578,7 +1610,7 @@ What is ClockWordMod?
 
 \begin_layout Standard
 ClockWorkMod(CWM) is a custom Android recovery, which helps us to perform
- advanced recoveries, maintenence.
+ advanced recoveries, maintenance.
  It is a good practice to install CWM while working with Android phone with
  root access.
 \end_layout
@@ -2048,7 +2080,7 @@ GDB
 \end_layout
 
 \begin_layout Standard
-The gdb program is the most prefered way of debugging errors.
+The gdb program is the most preferred way of debugging errors.
  Unlike a normal debugging session, in which a program is compiled and gdb
  is started, debugging for mobile requires a host program and a target program.
  A 
