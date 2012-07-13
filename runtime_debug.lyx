@@ -1,0 +1,216 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Runtime debugging tools
+\end_layout
+
+\begin_layout Standard
+Once B2G is flashed, it will be necessary to debug it for errors.
+ The following set of tools should help to debug the mobile, from booting
+ to first sight of homescreen
+\end_layout
+
+\begin_layout Subsection*
+Kernel logging
+\end_layout
+
+\begin_layout Standard
+It is possible to get the kernel messages onto the mobile screen.
+ This will be useful if the kernel gets loaded but the mobile gets stuck
+ at a certain point before b2g process starts.
+ To do so, the kernel messages must be redirected to standard output, 
+\emph on
+tty0.
+
+\emph default
+ It must be changed in the 
+\emph on
+BoardConfig.mk 
+\emph default
+file.
+ The following line should be edited
+\end_layout
+
+\begin_layout LyX-Code
+BOARD_KERNEL_CMDLINE := mem=211M console=ttyMSM2,115200n8 androidboot.hardware=u8
+150
+\end_layout
+
+\begin_layout Standard
+to 
+\end_layout
+
+\begin_layout LyX-Code
+BOARD_KERNEL_CMDLINE := mem=211M console=tty0,115200n8 androidboot.hardware=u8150
+\end_layout
+
+\begin_layout Standard
+This would output all the kernel messages to the mobile screen.
+ However, the messages scroll very fast.
+ A workaround would be to take a video of the boot process and split the
+ video into images and analyse them
+\end_layout
+
+\begin_layout Subsection*
+Android Debug Bridge
+\end_layout
+
+\begin_layout Standard
+Android Debug Bridge (adb) is a versatile command line tool that lets you
+ communicate with an emulator instance or connected Android-powered device(
+ Quoted from 
+\emph on
+developer.android.com
+\emph default
+ ).
+ ADB can be used for the following:
+\end_layout
+
+\begin_layout Enumerate
+Installing applications
+\end_layout
+
+\begin_layout Enumerate
+Copying files from host to mobile and vice versa
+\end_layout
+
+\begin_layout Enumerate
+Getting a log
+\end_layout
+
+\begin_layout Enumerate
+Getting a shell for the mobile
+\end_layout
+
+\begin_layout Standard
+The last feature can be used for debugging purpose.
+ The shell is a linux shell, with all the basic linux commands.
+ Through shell, the following two tools can be used for debugging
+\end_layout
+
+\begin_layout Description
+dmesg gives the kernel logging.
+ This can be used to find out if the low level drivers are working and that
+ the file systems are working as expected
+\end_layout
+
+\begin_layout Description
+logcat provides a mechanism for collecting and viewing system debug output.
+ Logs from various applications and portions of the system are collected
+ in a series of circular buffers, which then can be viewed and filtered
+ by the logcat command.
+\end_layout
+
+\begin_layout Subsection*
+GDB
+\end_layout
+
+\begin_layout Standard
+The gdb program is the most prefered way of debugging errors.
+ Unlike a normal debugging session, in which a program is compiled and gdb
+ is started, debugging for mobile requires a host program and a target program.
+ A 
+\emph on
+gdbserver 
+\emph default
+program is required on the target mobile and 
+\emph on
+gdb
+\emph default
+ is required on the host.
+ The 
+\emph on
+gdbserver 
+\emph default
+program must be forwarded to a port and should be attached to a program
+ to debug it.
+ 
+\emph on
+gdb
+\emph default
+ should be listening to the same port to output the debug information onto
+ the console.
+ A simple implementation would be
+\end_layout
+
+\begin_layout LyX-Code
+adb shell LD_LIBRARY_PATH=/data/local/gdbserver :8080 /system/b2g/b2g
+\end_layout
+
+\begin_layout LyX-Code
+gdb -x b2g.gdbinit out/target/product/u8150/obj/objdir-gecko/dist/bin/b2g
+\end_layout
+
+\begin_layout Standard
+The gdbinit file defines the path to look for symbols and executables.
+\end_layout
+
+\begin_layout Standard
+The file 
+\emph on
+run-gdb.sh 
+\emph default
+file in the B2G directory automates this whole process.
+\end_layout
+
+\end_body
+\end_document
