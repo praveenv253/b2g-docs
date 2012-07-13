@@ -106,103 +106,128 @@ Other non-language tools required are:
 \series bold
 Bash
 \series default
- - To understand and write bash files.
- Eg config.sh, flash.sh etc.
- As the code base is large, bash scripting will be useful in debugging the
+ - We will using bash to understand and write bash files.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Some of the important bash scripts are :-
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+config.sh
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+This script calls the repo functions and updates the code.
+ The repo function in-turn refers to the manifest file.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+flash.sh etc.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+This script flashes the images on the mobile.
+ It uses heimdall/fastboot to accomplish the work.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+build.sh
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+As the code base is large, bash scripting will be useful in debugging the
  code.
 \begin_inset Newline newline
 \end_inset
 
- Eg.
- Locate <file_name> - locates the file 
-\begin_inset Newline newline
-\end_inset
+Some impoertant bash commands
+\end_layout
 
+\begin_deeper
+\begin_layout Itemize
 
-\begin_inset space ~
-\end_inset
+\series bold
+locate 
+\series default
+<file_name> - locates the file 
+\end_layout
 
+\begin_layout Itemize
 
-\begin_inset space ~
-\end_inset
+\series bold
+grep
+\series default
+ <pattern> - Search word patterns in a file or group of files.
+\end_layout
 
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-Grep - Search word patterns in a file or group of files.
-\begin_inset Newline newline
-\end_inset
-
+\end_deeper
+\begin_layout Itemize
 Bash scripting will also be handy to automate certain tasks.
-\begin_inset Newline newline
-\end_inset
+\end_layout
 
+\begin_layout Itemize
 Tutorial - www.freeos.com/guides/lsst/
 \end_layout
 
+\end_deeper
 \begin_layout Enumerate
 
 \series bold
 Make
 \series default
  - This file is used to compile the code.
- This reduces the compilation time during recompilation This file indirectly
- helps us to understand various dependicies and interconnections between
- files One of the most important makefile id Android.mk.
+ This reduces the compilation time during recompilation.
+ One of the most important makefile is Android.mk.
  This will be explained later.
- Other important make files are BoardConfig.mk, AndroidBoard.mk etc When one
- we add C++( or C ) files, we have to add it in the corresponding MakeFile
- 
+ Other important make files are BoardConfig.mk, AndroidBoard.mk etc.
+ When we new code in a folder, the complication procedure has to added to
+ the respective Android.mk
 \end_layout
 
 \begin_deeper
 \begin_layout Enumerate
-Note on Android.mk: While building B2G, it searches all the folders recursively
+Note on Android.mk: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+When we build B2G, it searches all the folders and subfoders recursively
  for Android.mk file.
- Thus most of the folders have Android.mk File This file has the main environment
- variables Thus information of a folder is hidden in its Android.mk file.
- Many times we want to leave a part of code while compling because of the
- time taken by that part of the code.
- Simplest way is to rename Android.mk to Android.mk.bkp.
- This is usually done to gaia and gonk-misc 
 \end_layout
 
 \begin_layout Enumerate
+This file defines enivornment variables.
+\end_layout
+
+\begin_layout Enumerate
+First step to understand the conntents of a folder is to read it Android.mk.
+ This gives us the brief idea of the relations between the files.
+\end_layout
+
+\begin_layout Enumerate
+Compilation of B2G takes a lot of time.
+ We can reduce it by compiling only a part of code.
+ We can rename Android.mk in a particular folder to Android.mk.bkp if we want
+ to avoid the compiling that part of code.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
 Complete Documentation - http://www.gnu.org/software/make/manual/make.html#Introduc
-tion Short tutorial - http://wlug.org.nz/MakefileHowto
+tion
+\end_layout
+
+\begin_layout Enumerate
+Short tutorial - http://wlug.org.nz/MakefileHowto
 \end_layout
 
 \end_deeper
@@ -211,7 +236,7 @@ tion Short tutorial - http://wlug.org.nz/MakefileHowto
 \series bold
 Git
 \series default
- ( like svn ) - This is a version control tool.
+ ( similar svn ) - This is a version control tool.
  This is helps us to keep track of all the changes made and to recall versions
  when required.
  This is handy when the code size is huge.
@@ -223,39 +248,64 @@ Git
 \series bold
 ADB
 \series default
- ( Same as of that of Android ) - This is command line tool through which
+ ( Similar to Android's adb ) - This is command line tool through which
  we can communicate with the device.
  This is like having shell access to Linux on phone.
- This contains most of the important commands from bash shell.
- Eg : We can push/pull files and folders from the computer( server ) to/from
- mobile ( client) adb logcat contains all the logs from gonk, gecko, gaia.
+ This has few commands compared to bash shell.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+We can push/pull files and folders from the computer( server ) to/from mobile
+ ( client)
+\end_layout
+
+\begin_layout Enumerate
+'adb logcat' contains all the logs from gonk, gecko, gaia.
  Thus all the errors and warnings can be noted.
  We can even add our own LOG messages in the code.
  Thus this is a essential method to debug.
- Documentation - http://developer.android.com/tools/help/adb.html
 \end_layout
 
+\begin_layout Enumerate
+Documentation - http://developer.android.com/tools/help/adb.html
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 
 \series bold
 gdbserver
 \series default
- - This a very simple tool at the same time, very important tool, which
- will help us to get the exact line in the code which has errors.
- This can also be used to set break points in the code.
- gdbserver is started using ./run-gdb.sh.
- Understanding run-gdb.sh is important.
- 
+ - This a very simple tool at the same time, very important tool.
 \end_layout
 
+\begin_deeper
+\begin_layout Enumerate
+Gives the exact line in the code which has errors.
+\end_layout
+
+\begin_layout Enumerate
+Used to set break points in the code.
+\end_layout
+
+\begin_layout Enumerate
+run-gdb.sh is used to start gdbserver in the mobbile.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
 
 \series bold
 Linux 
 \series default
 - We strongly recommend Linux as the operating system to be used for developing.
- According to the B2G docs 64 bit linux and version > 11.10 is is preffered.
- Speed - Compilation will take a lot of time, thus a fast comp is preffered.
+ According to the B2G docs, 64 bit linux and version > 11.10 is is prefered.
+ Compilation will take a lot of time, thus a fast comp is prefered.
+\begin_inset Newline newline
+\end_inset
+
+Understanding the Linux architecture will be an advantage.
 \end_layout
 
 \begin_layout Section*
@@ -295,7 +345,8 @@ target "https://github.com/mozilla-b2g/wpa_supplicant_8_lib"
 
 \end_inset
 
-- wpa supplicant for armv7 (Verify).
+- wpa supplicant version 8.
+ This can be set in BoardConfig.sh (Verify).
 \end_layout
 
 \end_deeper
@@ -689,6 +740,10 @@ target "http://www.addictivetips.com/mobile/what-is-clockworkmod-recovery-and-ho
 
 \end_layout
 
+\begin_layout Subsection*
+Installation
+\end_layout
+
 \begin_layout Subsubsection*
 Method 1 
 \end_layout
@@ -729,8 +784,9 @@ Switch off the mobile.
 \end_layout
 
 \begin_layout Enumerate
-Create a backup image by going to the recovery section: Press the power,
- volume up and pick call (green) buttons simultaneously.
+Create a backup image by going to the recovery section.
+ For example press the power, volume up and pick call (green) buttons simultaneo
+usly.
 \begin_inset Newline newline
 \end_inset
 
@@ -738,24 +794,8 @@ Create a backup image by going to the recovery section: Press the power,
 \begin_inset Newline newline
 \end_inset
 
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-After this step, we have secured our phone, we can recover back in any situation
- possible.
+After this step, we have secured our phone and it can be recovered from
+ all possible situations.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -795,7 +835,177 @@ Now we can create recovery image by going to the recovery section.
 
 \end_deeper
 \begin_layout Subsection*
-Cyanogenmod ICS
+Cyanogenmod 9
+\end_layout
+
+\begin_layout Subsubsection*
+What is cyanogenmod?
+\end_layout
+
+\begin_layout Standard
+CyanogenMod is a customized, aftermarket firmware distribution for several
+ Android devices.
+ It is desgined to increase the performance of the mobile and offers new
+ features.
+\end_layout
+
+\begin_layout Subsubsection*
+What is cyanogenmod 9?
+\end_layout
+
+\begin_layout Standard
+It is the a custom mod for android 4.0.4.
+\end_layout
+
+\begin_layout Subsection*
+Installation
+\end_layout
+
+\begin_layout Standard
+Installation of Cyanogenmod similar to ClockWorkMod.
+\end_layout
+
+\begin_layout Section*
+Kernel
+\end_layout
+
+\begin_layout Subsubsection*
+What is kernel?
+\end_layout
+
+\begin_layout Standard
+Kernel is the main part of Operating System.
+ Along with other device drivers, it provides hardware abstraction layer
+ ( low-level API's).
+ The main tasks of kernel are
+\end_layout
+
+\begin_layout Enumerate
+Allocate rescources to different processes.
+\end_layout
+
+\begin_layout Enumerate
+Manage memory.
+\end_layout
+
+\begin_layout Enumerate
+Handle system calls.
+\end_layout
+
+\begin_layout Enumerate
+Handle various devices
+\end_layout
+
+\begin_layout Standard
+Further information can be found on 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://en.wikipedia.org/wiki/Kernel_%28computing%29#Device_management"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+How to choose the right kernel for the mobile phone?
+\end_layout
+
+\begin_layout Standard
+Most of the companies officially release kernels for their mobiles for a
+ particular version of Android.
+ A company doesnt necessarily release kernels for future versions of Android,
+ for a specific mobile.
+ For example Huawei released 
+\emph on
+froyo
+\emph default
+ kernel for 
+\emph on
+ideos u8150
+\emph default
+ but they did not release kernel for 
+\emph on
+ics
+\emph default
+.
+ Thus we have to find the kernel from other relaible sources like Cyanogenmod.
+ Many of the relaible links have been documented under the heading 'Code
+ Sources'.
+\end_layout
+
+\begin_layout Subsubsection*
+How to add a custom kernel to the mobile?
+\end_layout
+
+\begin_layout Subsubsection*
+Method 1
+\end_layout
+
+\begin_layout Standard
+If the kernel image is availabe.
+ Add the custom kernel to the path device/<device>/<name>/prebuilt/ and
+ add a rule to make kernel.
+ Add the following line can be added to device.mk file to make a rule to
+ make kernel
+\end_layout
+
+\begin_layout LyX-Code
+PRODUCT_COPY_FILE += 
+\backslash
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+device/<device>/<name>/prebuilt/kernel:kernel
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection*
+Method 2
+\end_layout
+
+\begin_layout Standard
+If kernel source is available, include the following line in AndroidBoard.mk
+\end_layout
+
+\begin_layout LyX-Code
+ifeq ($(KERNEL_DEFCONFIG),)   
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+KERNEL_DEFCONFIG := cyanogen_u8150_defconfig
+\end_layout
+
+\end_deeper
+\begin_layout LyX-Code
+endif
+\end_layout
+
+\begin_layout LyX-Code
+include kernel/AndroidKernel.mk
+\end_layout
+
+\begin_layout LyX-Code
+file := $(INSTALLED_KERNEL_TARGET)
+\end_layout
+
+\begin_layout LyX-Code
+ALL_PREBUILT += $(file)
+\end_layout
+
+\begin_layout LyX-Code
+$(file) : $(TARGET_PREBUILT_KERNEL) | $(ACP)
+\end_layout
+
+\begin_layout LyX-Code
+    $(transform-prebuilt-to-target)include 
+\end_layout
+
+\begin_layout Standard
+
 \end_layout
 
 \end_body
