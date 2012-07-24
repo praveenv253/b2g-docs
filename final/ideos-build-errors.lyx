@@ -1,0 +1,345 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Build errors encountered while building B2G for Huawei Ideos U8150
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+libstagefright
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+No rule to make target libchromium_net.so (?) required by libstagefright
+ (?)
+\end_layout
+
+\begin_layout Subsection*
+Problem
+\end_layout
+
+\begin_layout Standard
+Dependency on chromium has not been removed properly.
+ Issue crops up because of some changes that we have made
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Replace $(HTTP) with "android" (no quotes) in frameworks/base/media/libstagefrig
+ht/Android.mk
+\end_layout
+
+\begin_layout Section
+libwebrtc
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+target thumb C: libwebrtc_ns <= 
+\end_layout
+
+\begin_layout LyX-Code
+external/webrtc/src/modules/audio_processing/ns/main/source/nsx_core.c
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}: Assembler messages:
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:48: Error: selected processor does not support `smulbb
+ r5,r1,r3'
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:364: Error: selected processor does not support `clz r6,r5'
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:427: Error: selected processor does not support `clz r6,r4'
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:7181: Error: selected processor does not support `clz r2,r0'
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:7554: Error: selected processor does not support `smulbb
+ r7,r6,r0'
+\end_layout
+
+\begin_layout LyX-Code
+{standard input}:7627: Error: selected processor does not support `smulbb
+ r5,r1,r7'
+\end_layout
+
+\begin_layout LyX-Code
+make: *** [out/target/product/u8150/obj/STATIC_LIBRARIES/libwebrtc_ns_intermedia
+tes/nsx_core.o] 
+\end_layout
+
+\begin_layout LyX-Code
+Error 1
+\end_layout
+
+\begin_layout Subsection*
+Problem
+\end_layout
+
+\begin_layout Standard
+Webrtc does not work for ARM processors < v7.
+ Ideos has ARMv6.
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Use a different webrtc folder.
+ This can be obtained from here: 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/vivekkuamrbagaria/webrtc.git"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Refer 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://forum.xda-developers.com/showthread.php?t=1501114&page=3"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Live wallpaper
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+make: *** No rule to make target 
+\end_layout
+
+\begin_layout LyX-Code
+`packages/wallpapers/LivePicker/android.software.live_wallpaper.xml', needed
+ by 
+\end_layout
+
+\begin_layout LyX-Code
+`out/target/product/u8150/system/etc/permissions/android.software.live_wallpaper.xm
+l'.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+Stop.
+\end_layout
+
+\begin_layout Subsection*
+Problem
+\end_layout
+
+\begin_layout Standard
+Unnecessary dependency on live wallpapers.
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Comment the line containing "android.software.live_wallpaper.xml" in vendor/huawei/
+u8150/u8150-vendor.mk
+\end_layout
+
+\begin_layout Section
+apns-conf.xml
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+make: *** No rule to make target `development/data/etc/apns-conf_sdk.xml',
+ needed by 
+\end_layout
+
+\begin_layout LyX-Code
+`out/target/product/u8150/system/etc/apns-conf.xml'.
+ 
+\end_layout
+
+\begin_layout LyX-Code
+Stop.
+\end_layout
+
+\begin_layout Subsection*
+Problem
+\end_layout
+
+\begin_layout Standard
+Development folder is not there - it is not there for galaxy-s2 also.
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Comment it out.
+ Hash the lines in build/core/main.mk and in build/target/product/full_base_telep
+hony.mk which includes "apns-conf".
+ Don't comment out the PRODUCT_COPY_FILES variable altogether.
+ Just comment out the assigned part.
+\end_layout
+
+\begin_layout Section
+gtest
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+make: *** [out/host/linux-x86/obj/STATIC_LIBRARIES/libgtest_host_intermediates/g
+test-all.o] 
+\end_layout
+
+\begin_layout LyX-Code
+Error 1
+\end_layout
+
+\begin_layout Subsection*
+Problem
+\end_layout
+
+\begin_layout Standard
+64-bit host is required for compilation.
+ This error only occurs on computers running 32-bit operating systems.
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Add 
+\end_layout
+
+\begin_layout LyX-Code
+#include <cstddef> 
+\end_layout
+
+\begin_layout Standard
+to external/gtest/include/gtest/internal/gtest_param_util.h
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,1104 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Documentation of build errors faced on compiling hardware_qcom_display
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+libcopybit
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libcopybit/copybit.cpp:133: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'MDP_Y_CBCR_H2V2_ADRENO' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+In B2G/hardware/qcom/display/libcopybit/copybit.cpp, change <linux/msm_mdp.h>
+ to "msm_mdp.h", and copy msm_mdp.h from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "https://www.google.co.in/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CFAQFjAA&url=https%3A%2F%2Fwww.codeaurora.org%2Fgit%2Fprojects%2Fqrd-gb-dsds-7225%2Frepository%2Frevisions%2Fb97d35a9fe38c93178837dcea5d88d0fb28e9ba7%2Fraw%2Fkernel%2Finclude%2Flinux%2Fmsm_mdp.h&ei=YbXyT6zaC4XkrAfPl_3ACQ&usg=AFQjCNHULCj4nPDqYOMwOE0ZLv0blbLDrA&sig2=92s0mVDvebuCwCI9QWrvMg&cad=rja"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Add "MDP_Y_CBCR_H2V2_ADRENO," to the enum below "MDP_Y_CRCB_H2V2," if it
+ is not already there.
+\end_layout
+
+\begin_layout Section
+ashmem
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+error: 'ASHMEM_CACHE_FLUSH_RANGE' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Take ashmem.h from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://code.google.com/p/bricked/source/browse/include/linux/ashmem.h?repo=tenderloin&name=ics-exp&r=1d64c5abd8860ffdee23999fe471350d448e039b"
+
+\end_inset
+
+ and place it in B2G/hardware/qcom/display/libgralloc/ directory.
+ In B2G/hardware/qcom/display/libgralloc/ashmemalloc.cpp, replace <linux/ashmem.h>
+ with "ashmem.h".
+\end_layout
+
+\begin_layout Section
+_IOW
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+error: '_IOW' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Add #include <linux/fs.h> to pmemalloc.cpp before #include <linux/android_pmem.h>
+\end_layout
+
+\begin_layout Section
+pmemalloc
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+target thumb C++: libmemalloc <= hardware/qcom/display/libgralloc/pmemalloc.cpp
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp: In function 'int alignPmem(int,
+ size_t, int)':
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp:88: 
+\end_layout
+
+\begin_layout LyX-Code
+error: aggregate 'pmem_allocation allocation' has incomplete type and cannot
+ be defined
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp:91: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'PMEM_ALLOCATE_ALIGNED' was not declared in this scope
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp: 
+\end_layout
+
+\begin_layout LyX-Code
+In function 'int cleanPmem(void*, size_t, int, int)':
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp:97: 
+\end_layout
+
+\begin_layout LyX-Code
+error: aggregate 'pmem_addr pmem_addr' has incomplete type and cannot be
+ defined
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/pmemalloc.cpp:101: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'PMEM_CLEAN_INV_CACHES' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Take android_pmem.h from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "https://www.codeaurora.org/git/projects/qrd7225-ds-froyo/repository/revisions/cf2880e06f7f20cb3f10f8ee386924e4d0fe6fc9/entry/bionic/libc/kernel/common/linux/android_pmem.h"
+
+\end_inset
+
+ and place it in hardware/qcom/display/libgralloc.
+\end_layout
+
+\begin_layout Section
+HWC
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libqcomui/qcom_ui.h: In member function 'void QCBaseLayer::
+setS3DComposeFormat(int32_t)':
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libqcomui/qcom_ui.h:173: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'HWC_HINT_DRAW_S3D_SIDE_BY_SIDE' was not declared in this scope
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libqcomui/qcom_ui.h:175: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'HWC_HINT_DRAW_S3D_TOP_BOTTOM' was not declared in this scope
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/framebuffer.cpp: 
+\end_layout
+
+\begin_layout LyX-Code
+In function 'int mapFrameBufferLocked(private_module_t*)':
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/framebuffer.cpp: 
+\end_layout
+
+\begin_layout LyX-Code
+In function 'int fb_device_open(const hw_module_t*, const char*, hw_device_t**)'
+:
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/framebuffer.cpp:967: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'struct framebuffer_device_t' has no member named 'lockBuffer'
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/framebuffer.cpp:968: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'struct framebuffer_device_t' has no member named 'perform'
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libgralloc/framebuffer.cpp:984: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'struct framebuffer_device_t' has no member named 'numFramebuffers'
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Apply this diff on hardware/libhardware.
+\end_layout
+
+\begin_layout LyX-Code
+diff --git a/include/hardware/fb.h b/include/hardware/fb.h
+\end_layout
+
+\begin_layout LyX-Code
+index ba2f286..e2ccffa 100644
+\end_layout
+
+\begin_layout LyX-Code
+--- a/include/hardware/fb.h
+\end_layout
+
+\begin_layout LyX-Code
++++ b/include/hardware/fb.h
+\end_layout
+
+\begin_layout LyX-Code
+@@ -143,6 +143,35 @@ typedef struct framebuffer_device_t {
+\end_layout
+
+\begin_layout LyX-Code
+void* reserved_proc[6];
+\end_layout
+
+\begin_layout LyX-Code
++ /* -JCS start */
+\end_layout
+
+\begin_layout LyX-Code
++ int numFramebuffers;
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
++ int 
+\end_layout
+
+\begin_layout LyX-Code
++ (*orientationChanged)
+\end_layout
+
+\begin_layout LyX-Code
++ (
+\end_layout
+
+\begin_layout LyX-Code
++ struct framebuffer_device_t* dev
+\end_layout
+
+\begin_layout LyX-Code
++ , int orientation
+\end_layout
+
+\begin_layout LyX-Code
++ );
+\end_layout
+
+\begin_layout LyX-Code
++ int
+\end_layout
+
+\begin_layout LyX-Code
++ (*setActionSafeWidthRatio)
+\end_layout
+
+\begin_layout LyX-Code
++ (
+\end_layout
+
+\begin_layout LyX-Code
++ struct framebuffer_device_t* dev
+\end_layout
+
+\begin_layout LyX-Code
++ , float asWidthRatio
+\end_layout
+
+\begin_layout LyX-Code
++ );
+\end_layout
+
+\begin_layout LyX-Code
++ int
+\end_layout
+
+\begin_layout LyX-Code
++ (*setActionSafeHeightRatio)
+\end_layout
+
+\begin_layout LyX-Code
++ (
+\end_layout
+
+\begin_layout LyX-Code
++ struct framebuffer_device_t* dev
+\end_layout
+
+\begin_layout LyX-Code
++ , float asHeightRatio
+\end_layout
+
+\begin_layout LyX-Code
++ );
+\end_layout
+
+\begin_layout LyX-Code
++ int
+\end_layout
+
+\begin_layout LyX-Code
++ (*lockBuffer)
+\end_layout
+
+\begin_layout LyX-Code
++ (
+\end_layout
+
+\begin_layout LyX-Code
++ struct framebuffer_device_t* dev
+\end_layout
+
+\begin_layout LyX-Code
++ , int index
+\end_layout
+
+\begin_layout LyX-Code
++ );
+\end_layout
+
+\begin_layout LyX-Code
++ /* -JCS end */
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
+} framebuffer_device_t;
+\end_layout
+
+\begin_layout LyX-Code
+diff --git a/include/hardware/hwcomposer.h b/include/hardware/hwcomposer.h
+\end_layout
+
+\begin_layout LyX-Code
+index 0fa3512..a69198f 100644
+\end_layout
+
+\begin_layout LyX-Code
+--- a/include/hardware/hwcomposer.h
+\end_layout
+
+\begin_layout LyX-Code
++++ b/include/hardware/hwcomposer.h
+\end_layout
+
+\begin_layout LyX-Code
+@@ -66,7 +66,16 @@ enum {
+\end_layout
+
+\begin_layout LyX-Code
+* SurfaceFlinger will only honor this flag when the layer has no blending
+\end_layout
+
+\begin_layout LyX-Code
+*
+\end_layout
+
+\begin_layout LyX-Code
+*/
+\end_layout
+
+\begin_layout LyX-Code
+- HWC_HINT_CLEAR_FB = 0x00000002
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_HINT_CLEAR_FB = 0x00000002,
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
++ /*
+\end_layout
+
+\begin_layout LyX-Code
++ * HWC sets the HWC_HINT_DRAW_S3D_SS or HWC_HINT_DRAW_S3D_TB to tell
+\end_layout
+
+\begin_layout LyX-Code
++ * Surfaceflinger that currently a S3D video layer is being drawn so
+\end_layout
+
+\begin_layout LyX-Code
++ * convert the other layers to S3D format of Video while composing
+\end_layout
+
+\begin_layout LyX-Code
++ *
+\end_layout
+
+\begin_layout LyX-Code
++ */
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_HINT_DRAW_S3D_SIDE_BY_SIDE = 0x00000004,
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_HINT_DRAW_S3D_TOP_BOTTOM = 0x00000008
+\end_layout
+
+\begin_layout LyX-Code
+};
+\end_layout
+
+\begin_layout LyX-Code
+/*
+\end_layout
+
+\begin_layout LyX-Code
+@@ -79,7 +88,19 @@ enum {
+\end_layout
+
+\begin_layout LyX-Code
+* shall not consider this layer for composition as it will be handled
+\end_layout
+
+\begin_layout LyX-Code
+* by SurfaceFlinger (just as if compositionType was set to HWC_OVERLAY).
+\end_layout
+
+\begin_layout LyX-Code
+*/
+\end_layout
+
+\begin_layout LyX-Code
+- HWC_SKIP_LAYER = 0x00000001,
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_SKIP_LAYER = 0x00000001,
+\end_layout
+
+\begin_layout LyX-Code
++ /*
+\end_layout
+
+\begin_layout LyX-Code
++ * HWC_LAYER_NOT_UPDATING is set by SurfaceFlnger to indicate that the
+ HAL
+\end_layout
+
+\begin_layout LyX-Code
++ * that this layer is not updating.
+ The HAL can use this to determine if it
+\end_layout
+
+\begin_layout LyX-Code
++ * needs to draw this layer.
+\end_layout
+
+\begin_layout LyX-Code
++ */
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_LAYER_NOT_UPDATING = 0x00000002,
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
++ /* implementation-specific private usage flags */
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_FLAGS_PRIVATE_0 = 0x10000000,
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_FLAGS_PRIVATE_1 = 0x20000000,
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_FLAGS_PRIVATE_2 = 0x40000000,
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_FLAGS_PRIVATE_3 = 0x80000000,
+\end_layout
+
+\begin_layout LyX-Code
+};
+\end_layout
+
+\begin_layout LyX-Code
+/*
+\end_layout
+
+\begin_layout LyX-Code
+@@ -160,6 +181,9 @@ typedef struct hwc_layer {
+\end_layout
+
+\begin_layout LyX-Code
+/* blending to apply during composition */
+\end_layout
+
+\begin_layout LyX-Code
+int32_t blending;
+\end_layout
+
+\begin_layout LyX-Code
++ /* alpha value of the layer */
+\end_layout
+
+\begin_layout LyX-Code
++ int32_t alpha;
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
+/* area of the source to consider, the origin is the top-left corner of
+\end_layout
+
+\begin_layout LyX-Code
+* the buffer */
+\end_layout
+
+\begin_layout LyX-Code
+hwc_rect_t sourceCrop;
+\end_layout
+
+\begin_layout LyX-Code
+@@ -187,6 +211,12 @@ enum {
+\end_layout
+
+\begin_layout LyX-Code
+* passed to (*prepare)() has changed by more than just the buffer handles.
+\end_layout
+
+\begin_layout LyX-Code
+*/
+\end_layout
+
+\begin_layout LyX-Code
+HWC_GEOMETRY_CHANGED = 0x00000001,
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
++ /*
+\end_layout
+
+\begin_layout LyX-Code
++ * HWC_SKIP_COMPOSITION is set by the HWC to indicate to SurfaceFlinger
+ to
+\end_layout
+
+\begin_layout LyX-Code
++ * skip composition for this iteration.
+\end_layout
+
+\begin_layout LyX-Code
++ */
+\end_layout
+
+\begin_layout LyX-Code
++ HWC_SKIP_COMPOSITION = 0x00000002
+\end_layout
+
+\begin_layout LyX-Code
+};
+\end_layout
+
+\begin_layout LyX-Code
+/*
+\end_layout
+
+\begin_layout LyX-Code
+@@ -321,6 +351,12 @@ typedef struct hwc_composer_device {
+\end_layout
+
+\begin_layout LyX-Code
+void* reserved_proc[6];
+\end_layout
+
+\begin_layout LyX-Code
++ /*
+\end_layout
+
+\begin_layout LyX-Code
++ * This API is called by Surfaceflinger to inform the HWC about the
+\end_layout
+
+\begin_layout LyX-Code
++ * HDMI status.
+\end_layout
+
+\begin_layout LyX-Code
++ */
+\end_layout
+
+\begin_layout LyX-Code
++ void (*enableHDMIOutput)(struct hwc_composer_device* dev, bool enable);
+\end_layout
+
+\begin_layout LyX-Code
++
+\end_layout
+
+\begin_layout LyX-Code
+} hwc_composer_device_t;
+\end_layout
+
+\begin_layout Standard
+Note that there should be two blank lines at the end of the diff for it
+ to apply cleanly.
+ In case there are merge conflicts (due to changes made to the repository
+ after the compilation of this document), make the changes maually.
+\end_layout
+
+\begin_layout Section
+msm_rotator
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+error: linux/genlock.h: no such file or directory
+\end_layout
+
+\begin_layout LyX-Code
+error: linux/msm_rotator.h: no such file or directory
+\end_layout
+
+\begin_layout LyX-Code
+error: conflicting declaration 'HWC_LAYER_NOT_UPDATING'
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout Standard
+and therefore, a whole lot more.
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Add genlock.h to bionic/libc/kernel/common/linux.
+ In it, put contents from 
+\begin_inset CommandInset href
+LatexCommand href
+name "this"
+target "http://code.google.com/p/bricked/source/browse/include/linux/genlock.h?spec=svn.tenderloin.1d64c5abd8860ffdee23999fe471350d448e039b&repo=tenderloin&name=ics-exp&r=1d64c5abd8860ffdee23999fe471350d448e039b"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Add a hardware/qcom/display/liboverlay/msm_rotator.h with 
+\begin_inset CommandInset href
+LatexCommand href
+name "this"
+target "https://www.codeaurora.org/git/projects/qrd7225-ds-froyo/repository/revisions/cf2880e06f7f20cb3f10f8ee386924e4d0fe6fc9/entry/bionic/libc/kernel/common/linux/msm_rotator.h"
+
+\end_inset
+
+ content and change the header file overlayLib.h accordingly (<linux/msm_rotator.h
+> => "msm_rotator.h").
+\end_layout
+
+\begin_layout Standard
+Comment out the HWC_LAYER_NOT_UPDATING definition in hardware/qcom/display/libqc
+omui/qcom_ui.h to fix the conflicting definitions issue.
+\end_layout
+
+\begin_layout Section
+Add libgenlock to the kernel
+\end_layout
+
+\begin_layout Standard
+Fix genalloc for the kernel from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "https://github.com/CyanogenMod/lge-kernel-msm7x27/commit/213b2658a2cf1a5ea0d971b610f67d36a8a96c73"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+framebuffer_device_t::perform
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+'struct framebuffer_device_t' has no member named 'perform'
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Add 
+\end_layout
+
+\begin_layout LyX-Code
+int perform(struct framebuffer_device_t*, int, int);
+\end_layout
+
+\begin_layout Standard
+as a member of B2G/hardware/libhardware/include/hardware/fb.h (this can also
+ be found in cyanogenmod's version of the file).
+\end_layout
+
+\begin_layout Section
+eglGetRenderBufferANDROID
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libqcomui/qcom_ui.cpp: 
+\end_layout
+
+\begin_layout LyX-Code
+In function 'int qcomuiClearRegion(android::Region, void*, void*)':
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libqcomui/qcom_ui.cpp:440: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'eglGetRenderBufferANDROID' was not declared in this scope
+\end_layout
+
+\begin_layout Standard
+Solution: 
+\end_layout
+
+\begin_layout Standard
+Apply the opengl*.diff patches from this directory onto frameworks/base.
+\end_layout
+
+\begin_layout Standard
+Some parts of the patches were got from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://gitorious.org/xdandroid-eclair/xdandroid-frameworks_base/commit/9eeb23eacda543da0b7b0eb842fb61632ca2538d"
+
+\end_inset
+
+ and others from cyanogenmod.
+\end_layout
+
+\begin_layout Section
+egl_window_surface_v2_t::getRenderBuffer
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+error: undefined reference to 'android::egl_window_surface_v2_t::getRenderBuffer
+() const'
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+This issue is also solved by previous set of diffs.
+\end_layout
+
+\begin_layout Section
+Field has incomplete type
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/liboverlay/msm_rotator.h:45: error: field 'src' has
+ incomplete type
+\end_layout
+
+\begin_layout Standard
+and many more similar errors...
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+This seems to be caused by make or ccache maintaining cached versions of
+ some files and not detecting a change in them, possibly due to a copied
+ timestamp.
+ This can be fixed by clobbering and recompiling the whole thing.
+ Possible untested fix may also be to 
+\begin_inset Quotes eld
+\end_inset
+
+touch
+\begin_inset Quotes erd
+\end_inset
+
+ the files in question - if it works, this would be much faster.
+\end_layout
+
+\begin_layout Section
+mdp_overlay
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/liboverlay/overlayLib.h:158: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'mdp_overlay' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Get msm_mdp.h from this folder.
+ Alternately, try 
+\begin_inset CommandInset href
+LatexCommand href
+name "this"
+target "https://www.google.co.in/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CFIQFjAA&url=https%3A%2F%2Fwww.codeaurora.org%2Fgit%2Fprojects%2Fag-gb-dsds-7227%2Frepository%2Frevisions%2F18065ea37751cc6fc3a07430b22f469df8d29339%2Fraw%2Fkernel%2Finclude%2Flinux%2Fmsm_mdp.h&ei=S271T8bQCsOqrAfv2L3WBg&usg=AFQjCNH9VXx-7T8uoFjDEKixxDJ-Kt4l2g&sig2=337eQZ44s8AeC2TO7D9CTQ&cad=rja"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+MDP_BORDERFILL_SUPPORTED
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/liboverlay/overlayLib.h:182: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'MDP_BORDERFILL_SUPPORTED' was not declared in this scope
+\end_layout
+
+\begin_layout Subsection*
+Solution
+\end_layout
+
+\begin_layout Standard
+Added 
+\end_layout
+
+\begin_layout LyX-Code
+#define MDP_BORDERFILL_SUPPORTED 0x00010000
+\end_layout
+
+\begin_layout Standard
+in liboverlay/msm_mdp.h as given 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://git.tiamat-dev.com/8x50/tiamat-kernel//tree/include/linux/msm_mdp.h?id=8d4c4ef694dc758e8ba50c3d7c74c7c74c9783f6"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+hwcomposer perform
+\end_layout
+
+\begin_layout Subsection*
+Error
+\end_layout
+
+\begin_layout LyX-Code
+hardware/qcom/display/libhwcomposer/hwcomposer.cpp:1934: 
+\end_layout
+
+\begin_layout LyX-Code
+error: 'struct hwc_composer_device_t' has no member named 'perform'
+\end_layout
+
+\begin_layout Subsection*
+Solution 
+\end_layout
+
+\begin_layout Standard
+Add 
+\end_layout
+
+\begin_layout LyX-Code
+/*
+\end_layout
+
+\begin_layout LyX-Code
+* This API is called by Surfaceflinger to inform the HWC about the
+\end_layout
+
+\begin_layout LyX-Code
+* custom events(external display).
+\end_layout
+
+\begin_layout LyX-Code
+*/
+\end_layout
+
+\begin_layout LyX-Code
+void (*perform)(struct hwc_composer_device* dev, int event, int value);
+\end_layout
+
+\begin_layout Standard
+under hwc_composer_device_t in hwcomposer.h
+\end_layout
+
+\end_body
+\end_document

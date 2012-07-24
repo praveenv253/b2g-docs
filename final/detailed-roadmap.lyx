@@ -1,0 +1,612 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks true
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Intern roadmap
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Preliminary research
+\end_layout
+
+\begin_layout Standard
+The kick-off week (and the two weeks after) were used for research.
+ Documentation done:
+\end_layout
+
+\begin_layout Enumerate
+Setting up local environment
+\end_layout
+
+\begin_layout Enumerate
+Build procedure for the Samsung Galaxy S II
+\end_layout
+
+\begin_layout Section
+Porting to Galaxy S II
+\end_layout
+
+\begin_layout Standard
+This is fairly straightforward.
+ Firmware version on the phone is checked by extract-files.sh, meaning that
+ the phone will have to be upgraded to Ice Cream Sandwich.
+\end_layout
+
+\begin_layout Standard
+Compilation was done using the new build system (the old one at http://github.com
+/andreasgal/B2G/ is no longer used).
+\end_layout
+
+\begin_layout Section
+Compiling for the emulator
+\end_layout
+
+\begin_layout Standard
+Attempts were made to compile for the Android emulator.
+ However, this failed because the new build system compiles for the emulator
+ successfully only on a 64-bit computer.
+\end_layout
+
+\begin_layout Standard
+It was not determined as to how useful the emulator is likely to be during
+ the course of such a porting process since it was never used.
+ However, in all likelihood, it would have only been useful for application
+ development.
+\end_layout
+
+\begin_layout Section
+Porting to the Beagle Board
+\end_layout
+
+\begin_layout Standard
+Attempts were made to port B2G to the BeagleBoard C4.
+\end_layout
+
+\begin_layout Standard
+Ice Cream Sandwich was ported onto the board.
+ To what extent this worked was not determined.
+ However, the audio was tested and was seen to be working.
+\end_layout
+
+\begin_layout Standard
+The attempt to port B2G itself was abandoned soon after because of non-availabil
+ity of support for the device.
+ The team was unable to find a suitable candidate for the 
+\begin_inset Quotes eld
+\end_inset
+
+device
+\begin_inset Quotes erd
+\end_inset
+
+ directory, without which porting becomes a much more difficult job.
+\end_layout
+
+\begin_layout Standard
+Also, the team had fixed upon Huawei Ideos U8150 as the primary porting
+ target by this time.
+ Since the two targets had completely different processors, porting to one
+ would not 
+\begin_inset Quotes eld
+\end_inset
+
+help
+\begin_inset Quotes erd
+\end_inset
+
+ in the process of porting to the other.
+\end_layout
+
+\begin_layout Section
+Editing the manifest file for the Ideos
+\end_layout
+
+\begin_layout Standard
+In order to port to the Ideos, the first step was to create a suitable build
+ tree.
+ This involved getting the correct device-specific 
+\begin_inset Quotes eld
+\end_inset
+
+device
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+vendor
+\begin_inset Quotes erd
+\end_inset
+
+ folders.
+ These were obtained from 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/ColdFusionX/android_device_huawei_u8150"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/psyke83/proprietary_vendor_huawei"
+
+\end_inset
+
+ respectively.
+ The device folder was forked and a branch named 
+\begin_inset Quotes eld
+\end_inset
+
+ideos
+\begin_inset Quotes erd
+\end_inset
+
+ was created for development purposes.
+\end_layout
+
+\begin_layout Standard
+The vendor folder itself is not an absolute necessity as long as an extract-file
+s.sh script is present (and working) in the device folder.
+ However, if available, it reduces the effort involved in debugging extract-file
+s.sh and matching firmware versions.
+\end_layout
+
+\begin_layout Standard
+More changes were made to the manifest file due to build errors.
+ These are documented elsewhere.
+\end_layout
+
+\begin_layout Section
+Build B2G for the Ideos
+\end_layout
+
+\begin_layout Standard
+Several errors were encountered during the build process.
+ These are documented 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "ideos-build-errors.pdf"
+type "file:"
+
+\end_inset
+
+.
+ Most of the errors were solved by consulting, in turn, the internet (google
+ and stackoverflow), mailing lists, and then posing questions on the respective
+ IRC channel.
+\end_layout
+
+\begin_layout Section
+Install ClockworkMod recovery and create a backup
+\end_layout
+
+\begin_layout Standard
+ClockworkMod for the Ideos can be obtained from 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://download2.clockworkmod.com/recoveries/recovery-clockwork-3.0.2.4-ideos.img"
+
+\end_inset
+
+.
+ Installation of ClockworkMod has been explained in the main guide document.
+\end_layout
+
+\begin_layout Standard
+In order to flash the ClockworkMod image, the fastboot program is required
+ from Android developer tools.
+ This has been documented along with the initial setup.
+\end_layout
+
+\begin_layout Standard
+A backup of the existing system is taken.
+ For further safety, this recovery image is copied onto a development computer.
+\end_layout
+
+\begin_layout Section
+Flash a custom ROM
+\end_layout
+
+\begin_layout Standard
+CyanogenMod 9 (ICS) was obtained from <here> and flashed onto the phone
+ via recovery mode.
+\end_layout
+
+\begin_layout Standard
+Since the B2G build tree uses ICS revisions for all of its android-related
+ sources, it was worth while checking whether or not CM9 worked on the phone.
+ The result was that it worked, albeit with reduced performance (when compared
+ to Froyo, which was the stock OS).
+ Also certain features, such as the gallery, did not work.
+\end_layout
+
+\begin_layout Standard
+Additionally, the backup was verified to be working (by reinstalling Froyo).
+\end_layout
+
+\begin_layout Section
+Flash B2G onto the phone
+\end_layout
+
+\begin_layout Standard
+For this, flash.sh needs to be suitably edited.
+ A new case statement needs to be added for the Ideos.
+ This can be based off Galaxy Nexus (maguro), or any other device that uses
+ fastboot.
+\end_layout
+
+\begin_layout Section
+Make sure the kernel is up
+\end_layout
+
+\begin_layout Standard
+This was the stage at which the team met its first major roadblock.
+ The phone was in a state where the initial AIRCEL screen would display,
+ but then immediately restart.
+ This would happen repeatedly.
+\end_layout
+
+\begin_layout Standard
+The reason for this was that the bootloader was not able to load the kernel
+ into memory properly.
+ The bootloader works by looking for the kernel's base address in bootimg.cfg.
+ It then reads bytes of memory starting at this base address from the phone's
+ flash memory and loads the program into RAM.
+ However, at this stage, the kernel base address was incorrect, therefore
+ the bootloader was loading meaningless streams of data into memory.
+\end_layout
+
+\begin_layout Standard
+This was corrected by setting the BOARD_KERNEL_BASE setting in BoardConfig.mk
+ to an appropriate value (by comparing with the values in the stock bootimg.cfg
+ and in CyanogenMod's bootimg.cfg.
+\end_layout
+
+\begin_layout Standard
+Additionally, a lot of experimentation was done with the init program and
+ init.rc script.
+ This enabled the switching-on or switching-off of various modules, in order
+ to test the independent working of each module.
+ Also, the team discovered that kernel logs can be displayed on the home
+ screen.
+ Details are, again, available in the main guide.
+\end_layout
+
+\begin_layout Section
+Get the adb daemon to start
+\end_layout
+
+\begin_layout Standard
+After the kernel came up, it was still not possible to obtain a shell into
+ the device.
+ Kernel logs could be seen on the phone screen.
+ Inspection of these logs (by recording a video and replaying in slow-motion)
+ revealed that the kernel itself was working.
+ The lsusb command revealed that the device was detected (after connection),
+ but adb shell did not work.
+ This meant that adbd had not started.
+\end_layout
+
+\begin_layout Standard
+The call to start adbd is present in init.rc.
+ It is started on activation of a certain property.
+ It then seemed that the property never got activated.
+ Hence, a call to start adbd was made from a property that was always activated.
+ This started adbd on the phone.
+ The ability to use adb shell showed that both the USB driver as well as
+ the shell (sh or bash) worked with no further debugging required.
+\end_layout
+
+\begin_layout Standard
+Once adbd was running, detailed log messages could be produced by using
+ adb logcat (Android logs) and adb shell dmesg (kernel logs).
+\end_layout
+
+\begin_layout Section
+Get b2g to start
+\end_layout
+
+\begin_layout Standard
+The next major roadblock was in getting the main process of the B2G operating
+ system, called 
+\begin_inset Quotes eld
+\end_inset
+
+b2g
+\begin_inset Quotes erd
+\end_inset
+
+, to start.
+ The process was stuck in a position similar to the kernel - it was starting,
+ hitting an error, dying, and then starting again.
+\end_layout
+
+\begin_layout Standard
+The reason for this error was because gecko has not been written in a compatible
+ manner for ARMv6.
+ It only works properly with ARMv7 devices.
+ However, setting the architecture flag in the compiler fixes the problem:
+\end_layout
+
+\begin_layout LyX-Code
+ac_add_options --with_arch=armv6
+\end_layout
+
+\begin_layout Standard
+in gonk-misc/default-gecko-config.
+\end_layout
+
+\begin_layout Section
+Get gdbserver to start
+\end_layout
+
+\begin_layout Standard
+In order to better debug b2g as well as other programs on the system, it
+ is extremely useful to get gdbserver started on the phone.
+ This is usually achieved easily by executing the run-gdb.sh script present
+ in the main B2G folder (which debugs the b2g program by default).
+\end_layout
+
+\begin_layout Standard
+A short note on how this works:
+\end_layout
+
+\begin_layout Enumerate
+gdbserver starts on the phone, and begins to debug a certain program.
+ This binary need not have any debugging symbols.
+\end_layout
+
+\begin_layout Enumerate
+gdbserver communicates to the host computer via TCP (using the port number
+ with which it was called).
+ It waits for commands from the host.
+\end_layout
+
+\begin_layout Enumerate
+adb forward is used to forward commands to the TCP port on the phone from
+ a TCP port on the computer.
+\end_layout
+
+\begin_layout Enumerate
+gdb is started on the host computer (note that this must be the toolchain
+ gdb, i.e.
+ arm-linux-androideabi-gdb).
+ It is called on a binary present on the host system.
+ This binary must have debugging symbols.
+\end_layout
+
+\begin_layout Enumerate
+gdb is instructed to forward commands via TCP using the host port.
+ This is achieved by using the 
+\begin_inset Quotes eld
+\end_inset
+
+target remote
+\begin_inset Quotes erd
+\end_inset
+
+ command.
+\end_layout
+
+\begin_layout Enumerate
+Debugging can now be done as if debugging on the host computer itself.
+ Execution alone is done on the target phone.
+\end_layout
+
+\begin_layout Standard
+gdbserver was not starting because the default gdbserver provided by the
+ B2G build system was not compatible with the phone.
+ Another gdbserver had to be taken from Android's Native Development Kit
+ (the ndk/ folder in the B2G tree).
+\end_layout
+
+\begin_layout Standard
+Also, the run-gdb.sh script calls gdbserver with the 
+\begin_inset Quotes eld
+\end_inset
+
+--multi
+\begin_inset Quotes erd
+\end_inset
+
+ option (which makes gdbserver restart once it dies), and the 
+\begin_inset Quotes eld
+\end_inset
+
+target extended-remote
+\begin_inset Quotes erd
+\end_inset
+
+ command is used in the host gdb.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+--multi
+\begin_inset Quotes erd
+\end_inset
+
+ option had to be removed and 
+\begin_inset Quotes eld
+\end_inset
+
+target remote
+\begin_inset Quotes erd
+\end_inset
+
+ had to be used.
+\end_layout
+
+\begin_layout Standard
+Note that binaries with debugging symbols can be found in the symbols/ folder
+ in the out directory.
+ Gecko-related binaries (such as b2g) can be found in the objdir-gecko/dist/bin/
+ folder.
+\end_layout
+
+\begin_layout Section
+Tried fixing the GPU
+\end_layout
+
+\begin_layout Standard
+Even though the b2g process started, the display was not being displayed.
+ This was assumed to be a problem due to the display driver.
+ Incorrect sources led the team to believe that an Adreno 200 GPU was present
+ on the mobile phone.
+ Therefore attempts were made to compile drivers for this GPU.
+\end_layout
+
+\begin_layout Standard
+Trying to compile the display device driver (
+\begin_inset CommandInset href
+LatexCommand href
+name "hardware/qcom/display"
+target "https://github.com/CyanogenMod/android_hardware_qcom_display.git"
+
+\end_inset
+
+) created more build errors.
+ These were fixed in a similar manner - documentation of this can be found
+ 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "qcom-display-build-errors.pdf"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The related libraries were libgenlock, libgralloc and libqcomui.
+ In fact, it was the logcat errors 
+\begin_inset Quotes eld
+\end_inset
+
+Cannot load EGLConfig
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Unable to find libgenlock
+\begin_inset Quotes erd
+\end_inset
+
+ that led the team to start looking for these libraries.
+\end_layout
+
+\begin_layout Standard
+Once it was determined that the GPU did not exist and that all rendering
+ was being done in software, the team abandoned this path.
+\end_layout
+
+\begin_layout Section
+Fixing the display
+\end_layout
+
+\begin_layout Standard
+The problem with the display was debugged using run-gdb.sh.
+ It was discovered that the 
+\begin_inset Quotes eld
+\end_inset
+
+Just In Time
+\begin_inset Quotes erd
+\end_inset
+
+ compiler was posing issues.
+ Details are present in the main guide document.
+\end_layout
+
+\end_body
+\end_document
