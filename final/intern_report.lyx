@@ -305,6 +305,13 @@ LatexCommand tableofcontents
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Summary
 \end_layout
@@ -1006,6 +1013,28 @@ B2G Directory Layout
 The B2G directory layout is subject to changes depending upon the device,
  but broadly there are a number of paths which remain constant, even though
  the respective repository sources may change.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename b2g-tree.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -1748,6 +1777,17 @@ This project falls broadly under the intersecting domains of B2G, Android,
 
 \begin_layout Subsubsection
 Overview of the B2G architecture
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename b2g-process-architecture.png
+	scale 30
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
