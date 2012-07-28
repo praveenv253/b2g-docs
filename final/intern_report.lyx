@@ -2233,7 +2233,7 @@ target "http://en.wikipedia.org/wiki/Kernel_%28computing%29#Device_management"
 \end_layout
 
 \begin_layout Subsubsection
-Choosing the right kernel
+Getting the kernel
 \end_layout
 
 \begin_layout Standard
@@ -2245,7 +2245,7 @@ Most of the companies officially release kernels for their mobiles for a
 \emph on
 froyo
 \emph default
- kernel for 
+ kernel source for 
 \emph on
 ideos u8150
 \emph default
@@ -2269,8 +2269,8 @@ Method 1
 
 \begin_layout Standard
 If the kernel image is available.
- Add the custom kernel to the path device/<device>/<name>/prebuilt/ and
- add a rule to make kernel.
+ Add the kernel image to the path device/<device>/<name>/prebuilt/ and add
+ a rule to make kernel.
  Add the following line can be added to device.mk file to make a rule to
  make kernel
 \end_layout
@@ -2555,7 +2555,8 @@ gdb
 \end_layout
 
 \begin_layout LyX-Code
-adb shell LD_LIBRARY_PATH=/data/local/gdbserver :8080 /system/b2g/b2g
+adb shell LD_LIBRARY_PATH=/system/b2g /data/local/gdbserver :8080 /system/b2g/b2
+g
 \end_layout
 
 \begin_layout LyX-Code
@@ -3031,8 +3032,7 @@ Getting help
 \end_layout
 
 \begin_layout Standard
-The following source will prove invaluable when information about a particular
- procedure is required
+The following source will prove invaluable in the process of porting
 \end_layout
 
 \begin_layout Subsubsection
@@ -3114,7 +3114,15 @@ The mailing list can be used for more non interactive help.
 \end_layout
 
 \begin_layout Enumerate
-dev-b2g-request@list.mozilla.org
+dev-b2g@list.mozilla.org
+\end_layout
+
+\begin_layout Enumerate
+dev-gaia@list.mozilla.org
+\end_layout
+
+\begin_layout Enumerate
+community-b2g@list.mozilla.org
 \end_layout
 
 \begin_layout Subsubsection
